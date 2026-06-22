@@ -1,0 +1,15 @@
+﻿{
+  "info": {
+    "inputFilePath": "asdasd",
+    "outputFolderPath": "asdddddd"
+  },
+  "pipeLine": [
+    {
+      "type": "DDD",
+      "segmentParams": {
+        "start": "00:00:10",
+        "end": "00:00:30"
+      }
+    }
+  ]
+}
