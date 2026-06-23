@@ -1,9 +1,7 @@
-﻿using Core.Segments.Attributes;
-using Core.Segments.Interfaces;
+﻿using Core.Segments.Interfaces;
 
 namespace Core.Segments;
 
-[PiplineSegment("Resize")]
 internal class ResizeSegment : IPiplineSegment
 {
     public ResizeSegment()

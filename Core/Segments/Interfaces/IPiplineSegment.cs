@@ -1,6 +1,6 @@
 ﻿namespace Core.Segments.Interfaces;
 
-public interface IPiplineSegment
+internal interface IPiplineSegment
 {
     void Apply();
 }

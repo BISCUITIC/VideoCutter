@@ -1,24 +1,40 @@
-﻿using Core.Segments.Attributes;
-using Core.Services.Models;
+﻿using Core.Services.Models;
+using Core.Services.SegmentsFactories.Attributes;
+using Core.Services.SegmentsFactories.Interfaces;
 using System.Reflection;
 
 namespace Core.Services;
 
 public class PipelineFactory
 {
-    private readonly Dictionary<string, Type> _piplineSegmentTypes;
+    private readonly Dictionary<string, ISegmentFactory> _segmentFactories;
 
     public PipelineFactory()
     {
-        _piplineSegmentTypes = new Dictionary<string, Type>();
+        _segmentFactories = new Dictionary<string, ISegmentFactory>();
 
+        InitSegmentFactories();
+    }
+
+    private void InitSegmentFactories()
+    {
         Type[] types = Assembly.GetExecutingAssembly().GetTypes();
 
         foreach (Type type in types)
         {
-            PiplineSegmentAttribute attribute = type.GetCustomAttribute<PiplineSegmentAttribute>();
-            if (attribute is not null)
-                _piplineSegmentTypes.Add(attribute.Type, type);
+            if (type.IsInterface || type.IsAbstract)
+                continue;
+
+            if (!typeof(ISegmentFactory).IsAssignableFrom(type))
+                continue;
+
+            SegmentFactoryAttribute? attribute = type.GetCustomAttribute<SegmentFactoryAttribute>();
+
+            if (attribute is null)
+                continue;
+
+            if (Activator.CreateInstance(type) is ISegmentFactory factory)
+                _segmentFactories.Add(attribute.Type, factory);
         }
     }
 
@@ -26,12 +42,13 @@ public class PipelineFactory
     {
         foreach (PipelineSegmentDefinition definition in segments)
         {
-            Type currentType;
-            bool success = _piplineSegmentTypes.TryGetValue(definition.Type,out currentType);
+            ISegmentFactory? currentFactory;
+            bool success = _segmentFactories.TryGetValue(definition.Type, out currentFactory);
 
-            if (success)
+            if (success && currentFactory is not null)
             {
-                var segment = Activator.CreateInstance(currentType);
+                //пока временно для теста
+                var segment = currentFactory.Create(definition.SegmentParams);
             }
         }
 

@@ -1,6 +1,8 @@
 ﻿using Config.Services;
+using Core;
 using Core.Services;
 using Core.Services.Models;
+using Core.Services.SegmentsFactories;
 
 namespace VideoCutter;
 
@@ -41,7 +43,8 @@ internal class Program
         //Console.WriteLine(Path.Exists(ConfigPath));
         //string output;
         //configHandler.Load().PipeLine[0].SegmentParams.TryGetValue("start", out output);
-        //Console.WriteLine(output);
+        //Console.WriteLine(new CutSegmentFactory().Create(configHandler.Load().PipeLine[0].SegmentParams));
+
 
         PipelineFactory factory = new PipelineFactory();
         factory.Create(configHandler.Load()

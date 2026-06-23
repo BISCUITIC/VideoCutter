@@ -1,13 +1,18 @@
-﻿using Core.Segments.Attributes;
-using Core.Segments.Interfaces;
+﻿using Core.Segments.Interfaces;
 
 namespace Core.Segments;
 
-[PiplineSegment("Cut")]
-internal class CutSegment : IPiplineSegment
+
+public class CutSegment : IPiplineSegment
 {
-    public CutSegment()
+    public TimeSpan? StartTime { get; }
+    public TimeSpan? EndTime { get; }
+
+    public CutSegment(TimeSpan start, TimeSpan end)
     {
+        StartTime = start;
+        EndTime = end;
+
         Console.WriteLine(this);
     }
 
@@ -18,6 +23,6 @@ internal class CutSegment : IPiplineSegment
 
     public override string ToString()
     {
-        return "Cut segment";
+        return $"Cut segment : start {StartTime} ; end {EndTime}";
     }
 }
