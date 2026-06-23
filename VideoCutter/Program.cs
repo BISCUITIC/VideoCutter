@@ -1,8 +1,10 @@
-﻿using Config.Services;
+﻿using Config.Contracts;
+using Config.Services;
 using Core;
 using Core.Services;
 using Core.Services.Models;
 using Core.Services.SegmentsFactories;
+using FFMpegCore;
 
 namespace VideoCutter;
 
@@ -22,33 +24,27 @@ internal class Program
                                                         "input.mp4");
     private static readonly string VideoOutputFilePath = Path.Combine(AppContext.BaseDirectory,
                                                               "Test",
-                                                              "output.mp4");
+                                                              "output_1.mp4");
 
     private static void Main(string[] args)
     {
-        //Console.WriteLine("Hello, World!");
-        //GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
-
-        //FFMpegArguments.FromFileInput(VideoInputFilePath)
-        //               .OutputToFile(VideoOutputFilePath, 
-        //                             true, 
-        //                             options => options.Seek(TimeSpan.FromSeconds(10))
-        //                                               .WithDuration(TimeSpan.FromSeconds(20))
-        //                                               .CopyChannel())
-        //               .ProcessAsynchronously();
+        Console.WriteLine("Hello, World!");
 
         ConfigHandler configHandler = new ConfigHandler(ConfigPath);
+        PipelineConfig config = configHandler.Load();
 
+        IEnumerable<PipelineSegmentDefinition> segmentDefinitions = 
+            config.PipeLine.Select(item => new PipelineSegmentDefinition(item.Type, item.SegmentParams));
 
-        //Console.WriteLine(Path.Exists(ConfigPath));
-        //string output;
-        //configHandler.Load().PipeLine[0].SegmentParams.TryGetValue("start", out output);
-        //Console.WriteLine(new CutSegmentFactory().Create(configHandler.Load().PipeLine[0].SegmentParams));
+        PipelineFactory factory = new PipelineFactory();         
+        Pipeline pipeline = factory.Create(segmentDefinitions);
 
+        GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
-        PipelineFactory factory = new PipelineFactory();
-        factory.Create(configHandler.Load()
-                                    .PipeLine
-                                    .Select(item => new PipelineSegmentDefinition(item.Type, item.SegmentParams)));
+        FFMpegArguments.FromFileInput(VideoInputFilePath)
+                       .OutputToFile(VideoOutputFilePath,
+                                     true,
+                                     options => pipeline.Execute(options))
+                       .ProcessAsynchronously();           
     }
 }

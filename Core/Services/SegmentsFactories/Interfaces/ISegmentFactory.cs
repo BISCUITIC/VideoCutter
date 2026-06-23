@@ -2,7 +2,7 @@
 
 namespace Core.Services.SegmentsFactories.Interfaces;
 
-public interface ISegmentFactory
+internal interface ISegmentFactory
 {
     IPiplineSegment Create(Dictionary<string, string> segmentParams);
 }

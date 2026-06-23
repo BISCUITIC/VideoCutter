@@ -6,7 +6,7 @@ using Core.Services.SegmentsFactories.Interfaces;
 namespace Core.Services.SegmentsFactories;
 
 [SegmentFactory("Cut")]
-public class CutSegmentFactory : ISegmentFactory
+internal class CutSegmentFactory : ISegmentFactory
 {
     public CutSegmentFactory() { }
 
@@ -14,9 +14,7 @@ public class CutSegmentFactory : ISegmentFactory
     {
         TimeSpan startTime = TimeSpan.Parse(segmentParams["start"]);
 
-        TimeSpan endTime = TimeSpan.Parse(segmentParams["end"]);
-
-        Console.WriteLine("Factory");
+        TimeSpan endTime = TimeSpan.Parse(segmentParams["end"]);        
 
         return new CutSegment(startTime, endTime);
     }

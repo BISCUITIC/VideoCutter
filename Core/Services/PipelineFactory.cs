@@ -1,4 +1,5 @@
-﻿using Core.Services.Models;
+﻿using Core.Segments.Interfaces;
+using Core.Services.Models;
 using Core.Services.SegmentsFactories.Attributes;
 using Core.Services.SegmentsFactories.Interfaces;
 using System.Reflection;
@@ -38,20 +39,25 @@ public class PipelineFactory
         }
     }
 
-    public Pipeline Create(IEnumerable<PipelineSegmentDefinition> segments)
+    public Pipeline Create(IEnumerable<PipelineSegmentDefinition> segmentDefinitions)
     {
-        foreach (PipelineSegmentDefinition definition in segments)
+        List<IPiplineSegment> segments = new List<IPiplineSegment>();
+
+        foreach (PipelineSegmentDefinition definition in segmentDefinitions)
         {
             ISegmentFactory? currentFactory;
             bool success = _segmentFactories.TryGetValue(definition.Type, out currentFactory);
 
             if (success && currentFactory is not null)
+            {                
+                segments.Add(currentFactory.Create(definition.SegmentParams));
+            }
+            else
             {
-                //пока временно для теста
-                var segment = currentFactory.Create(definition.SegmentParams);
+                throw new InvalidOperationException($"Unknown segment type '{definition.Type}'");
             }
         }
 
-        return new Pipeline();
+        return new Pipeline(segments);
     }
 }

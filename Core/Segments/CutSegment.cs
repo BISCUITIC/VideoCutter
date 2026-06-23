@@ -1,9 +1,10 @@
 ﻿using Core.Segments.Interfaces;
+using FFMpegCore;
 
 namespace Core.Segments;
 
 
-public class CutSegment : IPiplineSegment
+internal class CutSegment : IPiplineSegment
 {
     public TimeSpan? StartTime { get; }
     public TimeSpan? EndTime { get; }
@@ -16,9 +17,11 @@ public class CutSegment : IPiplineSegment
         Console.WriteLine(this);
     }
 
-    public void Apply()
+    public void Apply(FFMpegArgumentOptions options)
     {
-        throw new NotImplementedException();
+        options.Seek(StartTime)
+               .WithDuration(EndTime - StartTime)
+               .CopyChannel();
     }
 
     public override string ToString()

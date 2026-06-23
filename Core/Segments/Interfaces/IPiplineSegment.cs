@@ -1,6 +1,8 @@
-﻿namespace Core.Segments.Interfaces;
+﻿using FFMpegCore;
 
-internal interface IPiplineSegment
+namespace Core.Segments.Interfaces;
+
+public interface IPiplineSegment
 {
-    void Apply();
+    void Apply(FFMpegArgumentOptions options);
 }
