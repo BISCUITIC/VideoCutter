@@ -7,7 +7,7 @@
     {
       "type": "Cut",
       "segmentParams": {
-        "start": "00:00:00",
+        "start": "00:00:15",
         "end": "00:00:30"
       }
     },
@@ -19,6 +19,12 @@
         "radius": "11",
         "power": "2"
       }
-    } 
+    },
+    {
+      "type": "Text",
+      "segmentParams": {
+        "text": "1 серия. 1 сезон. 1 часть"
+      }
+    }
   ]
 }
