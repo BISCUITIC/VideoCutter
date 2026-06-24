@@ -1,5 +1,6 @@
 ﻿using Core.Segments.Interfaces;
 using FFMpegCore;
+using System.Text;
 
 namespace Core;
 
@@ -14,9 +15,17 @@ public class Pipeline
 
     public void Execute(FFMpegArgumentOptions options)
     {
+        StringBuilder filter = new StringBuilder();
+
+        filter.Append("-filter_complex \"");
+
         foreach (var segment in _segments)
         {
-            segment.Apply(options);
-        }        
+            segment.Apply(options, filter);
+        }
+        
+        filter.Append("\"");
+
+        options.WithCustomArgument(filter.ToString());
     }
 }

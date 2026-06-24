@@ -1,5 +1,6 @@
 ﻿using Core.Segments.Interfaces;
 using FFMpegCore;
+using System.Text;
 
 namespace Core.Segments;
 
@@ -17,7 +18,7 @@ internal class CutSegment : IPiplineSegment
         Console.WriteLine(this);
     }
 
-    public void Apply(FFMpegArgumentOptions options)
+    public void Apply(FFMpegArgumentOptions options, StringBuilder filterArgument)
     {
         options.Seek(StartTime)
                .WithDuration(EndTime - StartTime);               

@@ -5,10 +5,10 @@ using Core.Services.SegmentsFactories.Interfaces;
 
 namespace Core.Services.SegmentsFactories;
 
-[SegmentFactory("Blur")]
-internal class BlurSegmentFactory : ISegmentFactory
+[SegmentFactory("TikTok")]
+internal class TikTokSegmentFactory : ISegmentFactory
 {
-    public BlurSegmentFactory() { }
+    public TikTokSegmentFactory() { }
 
     public IPiplineSegment Create(Dictionary<string, string> segmentParams)
     {
@@ -16,6 +16,6 @@ internal class BlurSegmentFactory : ISegmentFactory
 
         int height = int.Parse(segmentParams["height"]);
 
-        return new BlurSegment(width, height);
+        return new TikTokSegment(width, height);
     }
 }

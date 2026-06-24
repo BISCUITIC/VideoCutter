@@ -42,6 +42,6 @@ internal class Program
                        .OutputToFile(VideoOutputFilePath,
                                      true,
                                      options => pipeline.Execute(options))
-                       .ProcessAsynchronously();
+                       .ProcessSynchronously();
     }
 }

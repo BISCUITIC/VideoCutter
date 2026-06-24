@@ -1,4 +1,4 @@
-﻿{
+{
   "info": {
     "inputFilePath": "asdasd",
     "outputFolderPath": "asdddddd"
@@ -12,12 +12,13 @@
       }
     },
     {
-      "type": "Resize",
+      "type": "TikTok",
       "segmentParams": {
-        "mode": "Pad",
         "width": "1080",
         "height": "1960"
       }
-    }  
+    }
   ]
+}{
+
 }
