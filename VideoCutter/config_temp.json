@@ -15,9 +15,19 @@
       "type": "TikTok",
       "segmentParams": {
         "width": "1080",
+        "height": "1960",
+        "radius": "11",
+        "power": "2"
+      }
+    },
+    {
+      "type": "Resize",
+      "segmentParams": {
+        "mode": "Pad",
+        "width": "1080",
         "height": "1960"
       }
-    }
+    }  
   ]
 }{
 

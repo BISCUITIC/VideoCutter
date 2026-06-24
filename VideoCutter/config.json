@@ -12,12 +12,13 @@
       }
     },
     {
-      "type": "Resize",
+      "type": "TikTok",
       "segmentParams": {
-        "mode": "Pad",
         "width": "1080",
-        "height": "1960"
+        "height": "1960",
+        "radius": "11",
+        "power": "2"
       }
-    }  
+    } 
   ]
 }

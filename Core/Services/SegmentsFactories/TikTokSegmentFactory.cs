@@ -13,9 +13,11 @@ internal class TikTokSegmentFactory : ISegmentFactory
     public IPiplineSegment Create(Dictionary<string, string> segmentParams)
     {
         int width = int.Parse(segmentParams["width"]);
-
         int height = int.Parse(segmentParams["height"]);
 
-        return new TikTokSegment(width, height);
+        int radius = int.Parse(segmentParams["radius"]);
+        int power = int.Parse(segmentParams["power"]);
+
+        return new TikTokSegment(width, height, radius, power);
     }
 }

@@ -9,10 +9,16 @@ internal class TikTokSegment : IPiplineSegment
     public int Width { get; }
     public int Height { get; }
 
-    public TikTokSegment(int width, int height) 
+    public int Radius { get; }
+    public int Power { get; }
+
+    public TikTokSegment(int width, int height, int radius, int power) 
     {
         Width = width;
         Height = height;
+
+        Radius = radius;
+        Power = power;
 
         Console.WriteLine(this);
     }
@@ -22,7 +28,7 @@ internal class TikTokSegment : IPiplineSegment
         filterArgument.Append("[0:v]split[background][foreground];")
                       .Append("[background]")
                       .Append($"scale={Width}:{Height}:force_original_aspect_ratio=increase,")
-                      .Append($"crop={Width}:{Height},boxblur=20:1[blurred];")
+                      .Append($"crop={Width}:{Height},boxblur={Radius}:{Power}[blurred];")
                       .Append("[foreground]")
                       .Append($"scale={Width}:{Height}:force_original_aspect_ratio=decrease[scaled];")
                       .Append("[blurred][scaled]overlay=(W-w)/2:(H-h)/2;");        
