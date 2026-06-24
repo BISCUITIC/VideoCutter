@@ -20,8 +20,7 @@ internal class CutSegment : IPiplineSegment
     public void Apply(FFMpegArgumentOptions options)
     {
         options.Seek(StartTime)
-               .WithDuration(EndTime - StartTime)
-               .CopyChannel();
+               .WithDuration(EndTime - StartTime);               
     }
 
     public override string ToString()

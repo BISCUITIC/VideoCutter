@@ -7,9 +7,24 @@
     {
       "type": "Cut",
       "segmentParams": {
-        "start": "00:00:10",
-        "end": "00:01:30"
+        "start": "00:00:00",
+        "end": "00:00:30"
       }
-    }
+    },
+    {
+      "type": "Resize",
+      "segmentParams": {
+        "width": "1080",
+        "height": "1960",
+        "mode": "Pad"
+      }
+    },
+    {
+      "type": "Blur",
+      "segmentParams": {
+        "width": "1080",
+        "height": "1960"
+      }
+    }  
   ]
 }

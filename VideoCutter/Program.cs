@@ -3,7 +3,6 @@ using Config.Services;
 using Core;
 using Core.Services;
 using Core.Services.Models;
-using Core.Services.SegmentsFactories;
 using FFMpegCore;
 
 namespace VideoCutter;
@@ -24,27 +23,25 @@ internal class Program
                                                         "input.mp4");
     private static readonly string VideoOutputFilePath = Path.Combine(AppContext.BaseDirectory,
                                                               "Test",
-                                                              "output_1.mp4");
+                                                              "output_blur_2.mp4");
 
     private static void Main(string[] args)
     {
-        Console.WriteLine("Hello, World!");
+        GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
         ConfigHandler configHandler = new ConfigHandler(ConfigPath);
         PipelineConfig config = configHandler.Load();
 
-        IEnumerable<PipelineSegmentDefinition> segmentDefinitions = 
+        IEnumerable<PipelineSegmentDefinition> segmentDefinitions =
             config.PipeLine.Select(item => new PipelineSegmentDefinition(item.Type, item.SegmentParams));
 
-        PipelineFactory factory = new PipelineFactory();         
+        PipelineFactory factory = new PipelineFactory();
         Pipeline pipeline = factory.Create(segmentDefinitions);
-
-        GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
         FFMpegArguments.FromFileInput(VideoInputFilePath)
                        .OutputToFile(VideoOutputFilePath,
                                      true,
                                      options => pipeline.Execute(options))
-                       .ProcessAsynchronously();           
+                       .ProcessAsynchronously();
     }
 }

@@ -17,6 +17,6 @@ public class Pipeline
         foreach (var segment in _segments)
         {
             segment.Apply(options);
-        }
+        }        
     }
 }
