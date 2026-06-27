@@ -44,13 +44,6 @@ internal class Program
             
         VideoHandler videoHandler = videoHandlerFactory.Create();
 
-
         videoHandler.Process();
-
-        //FFMpegArguments.FromFileInput(VideoInputFilePath)
-        //               .OutputToFile(VideoOutputFilePath,
-        //                             true,
-        //                             options => pipeline.Execute(options))
-        //               .ProcessSynchronously();
     }
 }
