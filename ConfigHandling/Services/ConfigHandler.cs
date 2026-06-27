@@ -19,11 +19,11 @@ public class ConfigHandler
         };
     }
 
-    public PipelineConfig Load()
+    public ConfigPipline Load()
     {
         string json = File.ReadAllText(_configPath);        
 
-        PipelineConfig? configData = JsonSerializer.Deserialize<PipelineConfig>(json, _options);
+        ConfigPipline? configData = JsonSerializer.Deserialize<ConfigPipline>(json, _options);
 
         if (configData is null)
             throw new NullReferenceException("Failed to deserialize config");

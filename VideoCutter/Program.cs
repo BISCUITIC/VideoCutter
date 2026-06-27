@@ -30,7 +30,7 @@ internal class Program
         GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
         ConfigHandler configHandler = new ConfigHandler(ConfigPath);
-        PipelineConfig config = configHandler.Load();
+        ConfigPipline config = configHandler.Load();
 
         IEnumerable<PipelineSegmentDefinition> segmentDefinitions =
             config.PipeLine.Select(item => new PipelineSegmentDefinition(item.Type, item.SegmentParams));
