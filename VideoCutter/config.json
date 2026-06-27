@@ -1,16 +1,9 @@
 ﻿{
   "info": {
-    "inputFilePath": "asdasd",
-    "outputFolderPath": "asdddddd"
+    "inputFilePath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\input.mp4",
+    "outputFolderPath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\Ouput"
   },
-  "pipeLine": [
-    {
-      "type": "Cut",
-      "segmentParams": {
-        "start": "00:00:15",
-        "end": "00:00:30"
-      }
-    },
+  "pipeLine": [   
     {
       "type": "TikTok",
       "segmentParams": {

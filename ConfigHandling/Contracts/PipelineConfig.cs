@@ -2,10 +2,10 @@
 
 public class PipelineConfig
 {
-    public SessionInfo Info { get; }
+    public ConfigInfo Info { get; }
     public PipelineSegment[] PipeLine { get; }
 
-    public PipelineConfig(SessionInfo info, PipelineSegment[] pipeLine)
+    public PipelineConfig(ConfigInfo info, PipelineSegment[] pipeLine)
     {
         Info = info;
         PipeLine = pipeLine;

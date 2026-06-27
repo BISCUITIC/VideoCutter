@@ -1,8 +1,8 @@
 ﻿using Config.Contracts;
 using Config.Services;
-using Core;
 using Core.Models;
 using Core.Services;
+using Core.Services.ServicesFactories;
 using FFMpegCore;
 
 namespace VideoCutter;
@@ -38,10 +38,19 @@ internal class Program
         PipelineFactory factory = new PipelineFactory();
         Pipeline pipeline = factory.Create(segmentDefinitions);
 
-        FFMpegArguments.FromFileInput(VideoInputFilePath)
-                       .OutputToFile(VideoOutputFilePath,
-                                     true,
-                                     options => pipeline.Execute(options))
-                       .ProcessSynchronously();
+
+        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(
+            new SessionInfo(config.Info.InputFilePath, config.Info.OutputFolderPath));
+            
+        VideoHandler videoHandler = videoHandlerFactory.Create();
+
+
+        videoHandler.Process();
+
+        //FFMpegArguments.FromFileInput(VideoInputFilePath)
+        //               .OutputToFile(VideoOutputFilePath,
+        //                             true,
+        //                             options => pipeline.Execute(options))
+        //               .ProcessSynchronously();
     }
 }

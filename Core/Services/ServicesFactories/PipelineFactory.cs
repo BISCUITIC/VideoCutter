@@ -1,10 +1,10 @@
-﻿using Core.Segments.Interfaces;
-using Core.Services.Models;
+﻿using Core.Models;
+using Core.Segments.Interfaces;
 using Core.Services.SegmentsFactories.Attributes;
 using Core.Services.SegmentsFactories.Interfaces;
 using System.Reflection;
 
-namespace Core.Services;
+namespace Core.Services.ServicesFactories;
 
 public class PipelineFactory
 {

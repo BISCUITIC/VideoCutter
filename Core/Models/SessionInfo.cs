@@ -1,4 +1,4 @@
-﻿namespace Config.Contracts;
+﻿namespace Core.Models;
 
 public class SessionInfo
 {

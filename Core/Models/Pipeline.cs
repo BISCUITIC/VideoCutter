@@ -2,7 +2,7 @@
 using FFMpegCore;
 using System.Text;
 
-namespace Core;
+namespace Core.Models;
 
 public class Pipeline
 {
