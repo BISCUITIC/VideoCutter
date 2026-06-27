@@ -1,4 +1,5 @@
 ﻿using Core.Models;
+using Core.Segments;
 using Core.Segments.Interfaces;
 using Core.Services.SegmentsFactories.Attributes;
 using Core.Services.SegmentsFactories.Interfaces;

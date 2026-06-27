@@ -5,9 +5,9 @@
   },
   "cutService": {
     "cutServiceParams": {
-      "duration": "00:00:20",
+      "duration": "00:01:00",
       "offset": "00:01:25",
-      "chunksLimit": "0"
+      "chunksLimit": "1"
     }
   },
   "pipeLine": [   

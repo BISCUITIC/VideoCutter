@@ -34,13 +34,13 @@ internal class TextSegment : IPiplineSegment
         Console.WriteLine(this);
     }
 
-    public void Apply(FFMpegArgumentOptions options, StringBuilder filterArgument)
+    public string Apply()
     {        
-        filterArgument.Append($"drawtext=text='{Text}':x=(w-text_w)/2:y=100:" +
-                              $"fontfile='{FontPath}':" +
-                              $"fontsize={FontSize}:" +
-                              $"fontcolor={FontColor}:" +
-                              $"borderw={BorderWidth}:" +
-                              $"bordercolor={BorderColor},");
+        return $"drawtext=text='{Text}':x=(w-text_w)/2:y=100:" +
+               $"fontfile='{FontPath}':" +
+               $"fontsize={FontSize}:" +
+               $"fontcolor={FontColor}:" +
+               $"borderw={BorderWidth}:" +
+               $"bordercolor={BorderColor}";
     }
 }

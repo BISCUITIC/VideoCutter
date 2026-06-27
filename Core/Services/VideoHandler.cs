@@ -5,6 +5,7 @@ namespace Core.Services;
 
 public class VideoHandler
 {
+    private readonly Pipeline _pipeline;
     private readonly CutService _cutService;
     private readonly string _inputFilePath;
     private readonly string _outputFolderPath;
@@ -15,9 +16,11 @@ public class VideoHandler
         return Path.Combine(_outputFolderPath, _outputFileName + iteration.ToString() + ".mp4");          
     }
 
-    public VideoHandler(CutService cutService, SessionInfo sessionInfo)
+    public VideoHandler(Pipeline pipeline, CutService cutService, SessionInfo sessionInfo)
     {
+        _pipeline = pipeline;
         _cutService = cutService;
+
         _inputFilePath = sessionInfo.InputFilePath;
         _outputFolderPath = sessionInfo.OutputFolderPath;
         _outputFileName = "outPut";
@@ -27,11 +30,18 @@ public class VideoHandler
     {
         while (_cutService.CanMoveNext())
         {
-            FFMpegArguments.FromFileInput(_inputFilePath)
+            var arguments = FFMpegArguments.FromFileInput(_inputFilePath)
                            .OutputToFile(OutputFilePath(_cutService.CurrentIteration),
                                          true,
-                                         options => _cutService.Process(options))
-                           .ProcessSynchronously();
+                                         options =>
+                                         {
+                                             _cutService.Process(options);
+                                             _pipeline.Apply(options);
+                                         });                           
+
+            Console.WriteLine(arguments.Arguments);
+
+            arguments.ProcessSynchronously();
 
             _cutService.MoveNext();
         }

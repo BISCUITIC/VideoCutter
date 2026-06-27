@@ -32,7 +32,7 @@ internal class Program
         TimeSpan videoDuration = FFProbe.Analyse(config.Info.InputFilePath).Duration;
 
         CutServiceFactory cutServiceFactory = new CutServiceFactory(config.CutService.ToCutServiceDefinition(), videoDuration);
-        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(config.Info.ToSessionInfo(), cutServiceFactory);                        
+        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(pipeline ,config.Info.ToSessionInfo(), cutServiceFactory);                        
         VideoHandler videoHandler = videoHandlerFactory.Create();
 
         videoHandler.Process();
