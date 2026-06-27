@@ -1,6 +1,4 @@
 ﻿using Core.Segments.Interfaces;
-using FFMpegCore;
-using System.Text;
 
 namespace Core.Segments;
 
@@ -37,12 +35,12 @@ internal class ResizeSegment : IPiplineSegment
     }
 
     private string ApplyCrop()
-    {        
+    {
         return $"scale={Width}:{Height}:force_original_aspect_ratio=increase," +
                $"crop={Width}:{Height};";
     }
     private string ApplyPad()
-    {        
+    {
         return $"scale={Width}:{Height}:force_original_aspect_ratio=decrease," +
                $"pad={Width}:{Height}:(ow-iw)/2:(oh-ih)/2;";
     }

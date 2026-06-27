@@ -13,7 +13,8 @@ public class CutService
 
     public int CurrentIteration { get => _curreentIteration; }
     public bool CanMoveNext() { return _curreentIteration < _numberIteration; }
-    public void MoveNext() { 
+    public void MoveNext()
+    {
         if (!CanMoveNext())
             throw new ArgumentOutOfRangeException($"Iteration {_curreentIteration} is out of range");
         _curreentIteration++;
@@ -21,10 +22,10 @@ public class CutService
 
     public int NumberIteration { get => _numberIteration; }
 
-    public CutService(TimeSpan videoDuration, 
-                      TimeSpan chunkDuration, 
-                      TimeSpan? offset = null, 
-                      int? numberIteration = null) 
+    public CutService(TimeSpan videoDuration,
+                      TimeSpan chunkDuration,
+                      TimeSpan? offset = null,
+                      int? numberIteration = null)
     {
         _videoDuration = videoDuration;
         _chunkDuration = chunkDuration;
@@ -50,7 +51,7 @@ public class CutService
     }
 
     private int MaxNumberIteration()
-    {                   
+    {
         double videoSecondsDuration = _videoDuration.TotalSeconds;
         double chunkSecondsDuration = _chunkDuration.TotalSeconds;
         double offSetSecondsDuration = _offSet.TotalSeconds;
@@ -65,6 +66,6 @@ public class CutService
 
     public void Process(FFMpegArgumentOptions options)
     {
-        options.Seek(_offSet + _chunkDuration * _curreentIteration).WithDuration(_chunkDuration);      
+        options.Seek(_offSet + _chunkDuration * _curreentIteration).WithDuration(_chunkDuration);
     }
 }

@@ -1,5 +1,4 @@
 ﻿using Core.Models;
-using Core.Segments;
 using Core.Segments.Interfaces;
 using Core.Services.SegmentsFactories.Attributes;
 using Core.Services.SegmentsFactories.Interfaces;
@@ -50,7 +49,7 @@ public class PipelineFactory
             bool success = _segmentFactories.TryGetValue(definition.Type, out currentFactory);
 
             if (success && currentFactory is not null)
-            {                
+            {
                 segments.Add(currentFactory.Create(definition.SegmentParams));
             }
             else

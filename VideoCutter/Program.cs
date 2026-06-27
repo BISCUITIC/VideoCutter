@@ -16,7 +16,7 @@ internal class Program
                                                            "ffmpeg-8.1.1-full_build",
                                                            "bin");
 
-    private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory, 
+    private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory,
                                                              "config.json");
 
     private static void Main(string[] args)
@@ -24,15 +24,15 @@ internal class Program
         GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
         ConfigHandler configHandler = new ConfigHandler(ConfigPath);
-        ConfigPipline config = configHandler.Load();         
+        ConfigPipline config = configHandler.Load();
 
         IEnumerable<PipelineSegmentDefinition> segmentsDefinition = config.PipeLine.ToPipelineSegmentsDefinition();
-        Pipeline pipeline = new PipelineFactory().Create(segmentsDefinition);        
+        Pipeline pipeline = new PipelineFactory().Create(segmentsDefinition);
 
         TimeSpan videoDuration = FFProbe.Analyse(config.Info.InputFilePath).Duration;
 
         CutServiceFactory cutServiceFactory = new CutServiceFactory(config.CutService.ToCutServiceDefinition(), videoDuration);
-        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(pipeline ,config.Info.ToSessionInfo(), cutServiceFactory);                        
+        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(pipeline, config.Info.ToSessionInfo(), cutServiceFactory);
         VideoHandler videoHandler = videoHandlerFactory.Create();
 
         videoHandler.Process();

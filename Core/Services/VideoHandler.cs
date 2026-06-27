@@ -13,7 +13,7 @@ public class VideoHandler
 
     private string OutputFilePath(int iteration)
     {
-        return Path.Combine(_outputFolderPath, _outputFileName + iteration.ToString() + ".mp4");          
+        return Path.Combine(_outputFolderPath, _outputFileName + iteration.ToString() + ".mp4");
     }
 
     public VideoHandler(Pipeline pipeline, CutService cutService, SessionInfo sessionInfo)
@@ -37,7 +37,7 @@ public class VideoHandler
                                          {
                                              _cutService.Process(options);
                                              _pipeline.Apply(options);
-                                         });                           
+                                         });
 
             Console.WriteLine(arguments.Arguments);
 

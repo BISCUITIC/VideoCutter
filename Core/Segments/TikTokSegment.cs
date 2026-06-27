@@ -1,6 +1,4 @@
 ﻿using Core.Segments.Interfaces;
-using FFMpegCore;
-using System.Text;
 
 namespace Core.Segments;
 
@@ -12,7 +10,7 @@ internal class TikTokSegment : IPiplineSegment
     public int Radius { get; }
     public int Power { get; }
 
-    public TikTokSegment(int width, int height, int radius, int power) 
+    public TikTokSegment(int width, int height, int radius, int power)
     {
         Width = width;
         Height = height;

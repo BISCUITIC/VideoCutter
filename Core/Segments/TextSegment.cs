@@ -1,6 +1,4 @@
 ﻿using Core.Segments.Interfaces;
-using FFMpegCore;
-using System.Text;
 
 namespace Core.Segments;
 
@@ -15,11 +13,11 @@ internal class TextSegment : IPiplineSegment
     public int BorderWidth { get; }
     public string BorderColor { get; }
 
-    public TextSegment(string text = "Laybal", 
-                       string? fontPath = null, 
-                       int? fontSize = null, 
-                       string? fontColor = null, 
-                       int? borderWidth = null, 
+    public TextSegment(string text = "Laybal",
+                       string? fontPath = null,
+                       int? fontSize = null,
+                       string? fontColor = null,
+                       int? borderWidth = null,
                        string? borderColor = null)
     {
         Text = text;
@@ -35,7 +33,7 @@ internal class TextSegment : IPiplineSegment
     }
 
     public string Apply()
-    {        
+    {
         return $"drawtext=text='{Text}':x=(w-text_w)/2:y=100:" +
                $"fontfile='{FontPath}':" +
                $"fontsize={FontSize}:" +
