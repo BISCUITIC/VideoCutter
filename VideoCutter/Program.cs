@@ -4,6 +4,7 @@ using Core.Models;
 using Core.Services;
 using Core.Services.ServicesFactories;
 using FFMpegCore;
+using VideoCutter.Extensions;
 
 namespace VideoCutter;
 
@@ -15,33 +16,23 @@ internal class Program
                                                            "ffmpeg-8.1.1-full_build",
                                                            "bin");
 
-    private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory,
-                                                           "config.json");
-
-    private static readonly string VideoInputFilePath = Path.Combine(AppContext.BaseDirectory,
-                                                        "Test",
-                                                        "input.mp4");
-    private static readonly string VideoOutputFilePath = Path.Combine(AppContext.BaseDirectory,
-                                                              "Test",
-                                                              "output_blur_2.mp4");
+    private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory, 
+                                                             "config.json");
 
     private static void Main(string[] args)
     {
         GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
         ConfigHandler configHandler = new ConfigHandler(ConfigPath);
-        ConfigPipline config = configHandler.Load();
+        ConfigPipline config = configHandler.Load();         
 
-        IEnumerable<PipelineSegmentDefinition> segmentDefinitions =
-            config.PipeLine.Select(item => new PipelineSegmentDefinition(item.Type, item.SegmentParams));
+        IEnumerable<PipelineSegmentDefinition> segmentsDefinition = config.PipeLine.ToPipelineSegmentsDefinition();
+        Pipeline pipeline = new PipelineFactory().Create(segmentsDefinition);        
 
-        PipelineFactory factory = new PipelineFactory();
-        Pipeline pipeline = factory.Create(segmentDefinitions);
+        TimeSpan videoDuration = FFProbe.Analyse(config.Info.InputFilePath).Duration;
 
-
-        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(
-            new SessionInfo(config.Info.InputFilePath, config.Info.OutputFolderPath));
-            
+        CutServiceFactory cutServiceFactory = new CutServiceFactory(config.CutService.ToCutServiceDefinition(), videoDuration);
+        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(config.Info.ToSessionInfo(), cutServiceFactory);                        
         VideoHandler videoHandler = videoHandlerFactory.Create();
 
         videoHandler.Process();

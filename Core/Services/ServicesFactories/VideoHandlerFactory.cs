@@ -5,21 +5,18 @@ namespace Core.Services.ServicesFactories;
 
 public class VideoHandlerFactory
 {
-    private readonly SessionInfo _session;
-    private readonly TimeSpan _videoDuration;
-    private readonly TimeSpan _chunkDuration;
+    private readonly SessionInfo _session;   
+    private readonly CutServiceFactory _cutServiceFactory;
 
-    public VideoHandlerFactory(SessionInfo session)
+    public VideoHandlerFactory(SessionInfo session, CutServiceFactory cutServiceFactory)
     {
-        _videoDuration = FFProbe.Analyse(session.InputFilePath).Duration;
-        _chunkDuration = TimeSpan.Parse("00:00:15");
-
         _session = session;
+        _cutServiceFactory = cutServiceFactory;
     }
 
     public VideoHandler Create()
     {
-        CutService cutService = new CutService(_videoDuration, _chunkDuration);
+        CutService cutService = _cutServiceFactory.Create();
 
         return new VideoHandler(cutService, _session);
     }

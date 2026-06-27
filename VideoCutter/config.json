@@ -3,10 +3,12 @@
     "inputFilePath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\input.mp4",
     "outputFolderPath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\Ouput"
   },
-  "cut": {
-    "duration": "00:00:20",
-    "offset": "00:00:25",
-    "chunksLimit": "1"
+  "cutService": {
+    "cutServiceParams": {
+      "duration": "00:00:20",
+      "offset": "00:01:25",
+      "chunksLimit": "0"
+    }
   },
   "pipeLine": [   
     {
