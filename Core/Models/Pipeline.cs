@@ -17,7 +17,7 @@ public class Pipeline
     {
         StringBuilder filter = new StringBuilder();
 
-        filter.Append("-filter_complex \"");
+        filter.Append("-filter_complex \"[0:v]null[out1];");
 
         foreach (var segment in _segments)
         {

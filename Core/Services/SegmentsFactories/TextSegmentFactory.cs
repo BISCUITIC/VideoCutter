@@ -14,12 +14,21 @@ internal class TextSegmentFactory : ISegmentFactory
     {
         Type textSegmentType = typeof(TextSegment);
 
-        IEnumerable<string> segmentProperties = textSegmentType.GetProperties().Select(property => property.Name);
+        var segmentProperties = textSegmentType.GetProperties()
+                                               .Select(property => new { Name = property.Name, PropertyType = property.PropertyType });
 
-        string?[] segmentParamsValues = segmentProperties.Select(propertyName => segmentParams.GetValueOrDefault(propertyName.ToLower())).ToArray();
-
-        foreach (var segmentParam in segmentParamsValues)
-            Console.WriteLine(segmentParam);
+        object?[] segmentParamsValues = segmentProperties.Select(property =>
+        {
+            var paramKey = segmentParams.Keys
+                .FirstOrDefault(k => string.Equals(k, property.Name, StringComparison.OrdinalIgnoreCase));
+           
+            if (paramKey != null && segmentParams.TryGetValue(paramKey, out string? value))
+            {           
+                Console.WriteLine($"{property.Name} = {Convert.ChangeType(value, property.PropertyType)}");
+                return Convert.ChangeType(value, property.PropertyType);
+            }
+            return null;
+        }).ToArray();
 
         TextSegment textSegment = (TextSegment)(Activator.CreateInstance(textSegmentType, segmentParamsValues)
             ?? throw new NullReferenceException($"Couldn't create instatnce of '{textSegmentType}'"));

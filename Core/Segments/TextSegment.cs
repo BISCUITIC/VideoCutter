@@ -9,26 +9,26 @@ internal class TextSegment : IPiplineSegment
     public string Text { get; }
 
     public string FontPath { get; }
-    public string FontSize { get; }
+    public int FontSize { get; }
     public string FontColor { get; }
 
-    public string BorderWidth { get; }
+    public int BorderWidth { get; }
     public string BorderColor { get; }
 
     public TextSegment(string text = "Laybal", 
                        string? fontPath = null, 
-                       string? fontSize = null, 
+                       int? fontSize = null, 
                        string? fontColor = null, 
-                       string? borderWidth = null, 
+                       int? borderWidth = null, 
                        string? borderColor = null)
     {
         Text = text;
 
         FontPath = fontPath ?? "C\\:/Windows/Fonts/arial.ttf";
-        FontSize = fontSize ?? "75";
+        FontSize = fontSize ?? 75;
         FontColor = fontColor ?? "White";
 
-        BorderWidth = borderWidth ?? "10";
+        BorderWidth = borderWidth ?? 10;
         BorderColor = borderColor ?? "Black";
 
         Console.WriteLine(this);
@@ -36,6 +36,11 @@ internal class TextSegment : IPiplineSegment
 
     public void Apply(FFMpegArgumentOptions options, StringBuilder filterArgument)
     {        
-        filterArgument.Append($"drawtext=text='{Text}':x=(w-text_w)/2:y=100:fontfile='{FontPath}':fontsize={FontSize}:fontcolor={FontColor}:borderw={BorderWidth}:bordercolor={BorderColor},");
+        filterArgument.Append($"drawtext=text='{Text}':x=(w-text_w)/2:y=100:" +
+                              $"fontfile='{FontPath}':" +
+                              $"fontsize={FontSize}:" +
+                              $"fontcolor={FontColor}:" +
+                              $"borderw={BorderWidth}:" +
+                              $"bordercolor={BorderColor},");
     }
 }

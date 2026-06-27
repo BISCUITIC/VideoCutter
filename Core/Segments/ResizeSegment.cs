@@ -44,12 +44,14 @@ internal class ResizeSegment : IPiplineSegment
     private void ApplyCrop(FFMpegArgumentOptions options, StringBuilder filterArgument)
     {
         //options.WithCustomArgument($"-vf \"scale={Width}:{Height}:force_original_aspect_ratio=increase,crop={Width}:{Height}\"");
-        filterArgument.Append($"[0:v]scale={Width}:{Height}:force_original_aspect_ratio=increase,crop={Width}:{Height}");
+        filterArgument.Append($"[0:v]scale={Width}:{Height}:force_original_aspect_ratio=increase," +
+                              $"crop={Width}:{Height};");
     }
     private void ApplyPad(FFMpegArgumentOptions options, StringBuilder filterArgument)
     {
         //options.WithCustomArgument($"-vf \"scale={Width}:{Height}:force_original_aspect_ratio=decrease,pad={Width}:{Height}:(ow-iw)/2:(oh-ih)/2\"");
-        filterArgument.Append($"[0:v]scale={Width}:{Height}:force_original_aspect_ratio=decrease,pad={Width}:{Height}:(ow-iw)/2:(oh-ih)/2");
+        filterArgument.Append($"[0:v]scale={Width}:{Height}:force_original_aspect_ratio=decrease," +
+                              $"pad={Width}:{Height}:(ow-iw)/2:(oh-ih)/2;");
     }
 
     public override string ToString()

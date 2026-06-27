@@ -1,8 +1,8 @@
 ﻿using Config.Contracts;
 using Config.Services;
 using Core;
+using Core.Models;
 using Core.Services;
-using Core.Services.Models;
 using FFMpegCore;
 
 namespace VideoCutter;

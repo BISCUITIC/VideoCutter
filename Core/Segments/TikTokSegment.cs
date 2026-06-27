@@ -25,7 +25,7 @@ internal class TikTokSegment : IPiplineSegment
 
     public void Apply(FFMpegArgumentOptions options, StringBuilder filterArgument)
     {        
-        filterArgument.Append("[0:v]split[background][foreground];")
+        filterArgument.Append("[out1]split[background][foreground];")
                       .Append("[background]")
                       .Append($"scale={Width}:{Height}:force_original_aspect_ratio=increase,")
                       .Append($"crop={Width}:{Height},boxblur={Radius}:{Power}[blurred];")

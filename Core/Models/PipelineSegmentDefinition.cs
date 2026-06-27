@@ -1,4 +1,4 @@
-﻿namespace Core.Services.Models;
+﻿namespace Core.Models;
 
 public sealed class PipelineSegmentDefinition
 {
