@@ -19,7 +19,7 @@ internal class Program
     private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory,
                                                              "config.json");
 
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
         GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 
@@ -35,6 +35,6 @@ internal class Program
         VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(pipeline, config.Info.ToSessionInfo(), cutServiceFactory);
         VideoHandler videoHandler = videoHandlerFactory.Create();
 
-        videoHandler.Process();
+        await videoHandler.Process();
     }
 }

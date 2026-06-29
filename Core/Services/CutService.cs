@@ -1,25 +1,17 @@
-﻿using FFMpegCore;
+﻿using Core.Models;
+using FFMpegCore;
+using System.Collections;
 
 namespace Core.Services;
 
-public class CutService
+public class CutService: IEnumerable<CutServiceInfo>
 {
     private TimeSpan _chunkDuration;
     private TimeSpan _videoDuration;
     private TimeSpan _offSet;
-
-    private int _curreentIteration;
+    
     private int _numberIteration;
-
-    public int CurrentIteration { get => _curreentIteration; }
-    public bool CanMoveNext() { return _curreentIteration < _numberIteration; }
-    public void MoveNext()
-    {
-        if (!CanMoveNext())
-            throw new ArgumentOutOfRangeException($"Iteration {_curreentIteration} is out of range");
-        _curreentIteration++;
-    }
-
+    
     public int NumberIteration { get => _numberIteration; }
 
     public CutService(TimeSpan videoDuration,
@@ -31,7 +23,6 @@ public class CutService
         _chunkDuration = chunkDuration;
         _offSet = offset ?? TimeSpan.Zero;
 
-        _curreentIteration = 0;
         _numberIteration = 0;
 
         if (numberIteration < 0)
@@ -64,8 +55,18 @@ public class CutService
         _numberIteration = MaxNumberIteration();
     }
 
-    public void Process(FFMpegArgumentOptions options)
+    public void Process(FFMpegArgumentOptions options, CutServiceInfo info)
     {
-        options.Seek(_offSet + _chunkDuration * _curreentIteration).WithDuration(_chunkDuration);
+        options.Seek(info.Offset +  info.Duration * info.Iteration).WithDuration(_chunkDuration);
+    }
+
+    public IEnumerator<CutServiceInfo> GetEnumerator()
+    {
+        return new CutServiceEnumerator(_numberIteration, _chunkDuration, _offSet);
+    }
+
+    IEnumerator IEnumerable.GetEnumerator()
+    {
+        return GetEnumerator();
     }
 }
