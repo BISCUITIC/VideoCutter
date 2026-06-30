@@ -34,9 +34,9 @@ public class FilterGraphBuilder
 
     public string Build()
     {
-        _builder.Append("\" ");
-        _builder.Append($"-map \"[{_outputVideoStream}{_index}]\"");
-        _builder.Append($"-map \"[{_outputAudioStream}]\"");
+        _builder.Append("\"");
+        _builder.Append($" -map \"[{_outputVideoStream}{_index}]\"");
+        _builder.Append($" -map \"[{_outputAudioStream}]\"");
 
         return _builder.ToString();
     }
