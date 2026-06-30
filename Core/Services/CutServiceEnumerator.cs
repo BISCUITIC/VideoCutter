@@ -20,6 +20,8 @@ public class CutServiceEnumerator : IEnumerator<CutServiceInfo>
 
         _duration = duration;
         _offset = offset;
+
+        Reset();
     }
 
     public bool MoveNext()
@@ -33,7 +35,7 @@ public class CutServiceEnumerator : IEnumerator<CutServiceInfo>
 
     public void Reset()
     {
-        _currentIteration = 0;
+        _currentIteration = -1;
     }
 
     public void Dispose()
