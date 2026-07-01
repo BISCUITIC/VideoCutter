@@ -4,6 +4,10 @@ using Core.Models;
 using Core.Services;
 using Core.Services.ServicesFactories;
 using FFMpegCore;
+using Infrastructure.Configuration.Services;
+using Infrastructure.Configuration.Services.Facade;
+using Microsoft.Extensions.DependencyInjection;
+using System.Text.Json;
 using VideoCutter.Extensions;
 
 namespace VideoCutter;
@@ -19,7 +23,27 @@ internal class Program
     private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory,
                                                              "config.json");
 
-    private static async Task Main(string[] args)
+    private static void Main(string[] args)
+    {
+        ServiceCollection services = new ServiceCollection();
+
+        services.AddSingleton(provider => new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            IgnoreReadOnlyProperties = false,
+        });
+
+        services.AddSingleton<ConfigJsonParser>();
+        services.AddSingleton<ConfigFileReader>();
+        services.AddSingleton<ConfigProvider>();
+
+        ServiceProvider provider = services.BuildServiceProvider();
+
+        ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
+        Infrastructure.Configuration.Contracts.Config config = configProvider.Load("config.json");
+    }
+
+    private static async Task PriviousVersion()
     {
         GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
 

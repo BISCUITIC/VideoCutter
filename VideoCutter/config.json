@@ -3,29 +3,29 @@
     "inputFilePath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\input.mp4",
     "outputFolderPath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\Ouput"
   },
-  "cutService": {
-    "cutServiceParams": {
-      "duration": "00:00:20",
-      "offset": "00:00:00",
-      "chunksLimit": "3"
-    }
+  "segmentation": {
+    "chunkDuration": "00:00:20",
+    "offset": "00:00:00",
+    "maxChunks": 3
   },
-  "pipeLine": [   
-    {
-      "type": "TikTok",
-      "segmentParams": {
-        "width": "1080",
-        "height": "1960",
-        "radius": "11",
-        "power": "2"
+  "pipelineDefinition": {
+    "steps": [
+      {
+        "type": "TikTok",
+        "parameters": {
+          "width": "1080",
+          "height": "1960",
+          "radius": "11",
+          "power": "2"
+        }
+      },
+      {
+        "type": "Text",
+        "parameters": {
+          "text": "1 серия. 1 сезон. 1 часть",
+          "fontSize": "75"
+        }
       }
-    },
-    {
-      "type": "Text",
-      "segmentParams": {
-        "text": "1 серия. 1 сезон. 1 часть",
-        "fontSize": "75"
-      }
-    }
-  ]
+    ]
+  }
 }
