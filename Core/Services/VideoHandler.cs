@@ -14,6 +14,9 @@ public class VideoHandler
 
     private readonly SemaphoreSlim _semaphore;
 
+    private readonly ProgressTracker _progressTracker;  
+    private readonly ConsoleProgressRenderer _progressRenderer;
+
     private string OutputFilePath(int iteration)
     {
         return Path.Combine(_outputFolderPath, _outputFileName + iteration.ToString() + ".mp4");
@@ -29,10 +32,18 @@ public class VideoHandler
         _outputFileName = "output_";
 
         _semaphore = new SemaphoreSlim(3);
+
+        Console.WriteLine(_cutService.NumberIteration);
+        _progressTracker = new ProgressTracker(_cutService.NumberIteration);
+        _progressRenderer = new ConsoleProgressRenderer(_cutService.NumberIteration);
+        _progressTracker.OnChange += _progressRenderer.Update;
     }
 
     public async Task Process()
     {
+        var a = DateTime.Now;
+        Console.WriteLine(DateTime.Now);
+
         List<Task<bool>> chunkTasks = new List<Task<bool>>();
 
         foreach (CutServiceInfo info in _cutService) 
@@ -43,6 +54,9 @@ public class VideoHandler
         }
 
         await Task.WhenAll(chunkTasks);
+        var b = DateTime.Now;
+        Console.WriteLine(b);
+        Console.WriteLine(b - a);
     }
 
     private async Task<bool> ProcessChunk(CutServiceInfo info)
@@ -56,11 +70,16 @@ public class VideoHandler
                                              {
                                                  _cutService.Process(options, info);
                                                  _pipeline.Apply(options);
-                                             });
+                                                 options.WithCustomArgument("-threads 2");
+                                             })
+                               .NotifyOnProgress(progress =>
+                                                {                                                    
+                                                    _progressTracker.Report(info.Iteration, progress);                                                    
+                                                },
+                                                info.Duration
+                               );                        
 
-            Console.WriteLine(arguments.Arguments);
-
-            bool success = await arguments.ProcessAsynchronously();
+            bool success = await arguments.ProcessAsynchronously();            
 
             return success;
         }

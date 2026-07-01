@@ -14,7 +14,7 @@ public class CutServiceEnumerator : IEnumerator<CutServiceInfo>
     public CutServiceInfo Current => new CutServiceInfo(_currentIteration, _offset, _duration);
     object IEnumerator.Current => Current;
 
-    public CutServiceEnumerator(int numberIteration,TimeSpan duration, TimeSpan offset)
+    public CutServiceEnumerator(int numberIteration, TimeSpan duration, TimeSpan offset)
     {
         _numberIteration = numberIteration;
 
@@ -26,7 +26,7 @@ public class CutServiceEnumerator : IEnumerator<CutServiceInfo>
 
     public bool MoveNext()
     {      
-        if (_currentIteration >= _numberIteration)
+        if (_currentIteration >= _numberIteration - 1)
             return false;
 
         _currentIteration++;
