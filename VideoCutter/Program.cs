@@ -5,7 +5,7 @@ using Config.Services;
 using Core.Models;
 using Core.Services;
 using Core.Services.ServicesFactories;
-using Domain;
+using Domain.Definitions;
 using FFMpegCore;
 using Infrastructure.Configuration.Json.Services;
 using Microsoft.Extensions.DependencyInjection;
@@ -55,7 +55,7 @@ internal class Program
         ConfigPipline config = configHandler.Load();
 
         IEnumerable<PipelineSegmentDefinition> segmentsDefinition = config.PipeLine.ToPipelineSegmentsDefinition();
-        Pipeline pipeline = new PipelineFactory().Create(segmentsDefinition);
+        Core.Services.Pipeline pipeline = new PipelineFactory().Create(segmentsDefinition);
 
         TimeSpan videoDuration = FFProbe.Analyse(config.Info.InputFilePath).Duration;
 

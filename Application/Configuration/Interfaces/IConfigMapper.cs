@@ -1,5 +1,5 @@
 ﻿using Application.Configuration.Contracts;
-using Domain;
+using Domain.Definitions;
 
 namespace Application.Configuration.Interfaces;
 

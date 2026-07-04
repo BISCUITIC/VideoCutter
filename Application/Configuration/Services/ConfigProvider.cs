@@ -1,6 +1,6 @@
 ﻿using Application.Configuration.Contracts;
 using Application.Configuration.Interfaces;
-using Domain;
+using Domain.Definitions;
 
 namespace Application.Configuration.Services;
 
