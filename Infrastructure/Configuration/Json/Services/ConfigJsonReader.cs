@@ -1,6 +1,8 @@
-﻿namespace Infrastructure.Configuration.Services;
+﻿using Application.Configuration.Interfaces;
 
-public class ConfigFileReader
+namespace Infrastructure.Configuration.Json.Services;
+
+public class ConfigJsonReader : IConfigReader
 {
     public string Read(string path)
     {

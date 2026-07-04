@@ -1,11 +1,11 @@
-﻿namespace Infrastructure.Configuration.Contracts;
+﻿namespace Application.Configuration.Contracts;
 
-public class VideoSourceInfo
+public class VideoSourceContract
 {
     public string InputFilePath { get; }
     public string OutputFolderPath { get; }
 
-    public VideoSourceInfo(string inputFilePath, string outputFolderPath)
+    public VideoSourceContract(string inputFilePath, string outputFolderPath)
     {
         InputFilePath = inputFilePath;
         OutputFolderPath = outputFolderPath;

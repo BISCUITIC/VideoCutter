@@ -1,11 +1,13 @@
-﻿using Config.Contracts;
+﻿using Application.Configuration.Interfaces;
+using Application.Configuration.Services;
+using Config.Contracts;
 using Config.Services;
 using Core.Models;
 using Core.Services;
 using Core.Services.ServicesFactories;
+using Domain;
 using FFMpegCore;
-using Infrastructure.Configuration.Services;
-using Infrastructure.Configuration.Services.Facade;
+using Infrastructure.Configuration.Json.Services;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using VideoCutter.Extensions;
@@ -33,14 +35,16 @@ internal class Program
             IgnoreReadOnlyProperties = false,
         });
 
-        services.AddSingleton<ConfigJsonParser>();
-        services.AddSingleton<ConfigFileReader>();
+        services.AddSingleton<IConfigReader, ConfigJsonReader>();
+        services.AddSingleton<IConfigParser, ConfigJsonParser>();
+        services.AddSingleton<IConfigMapper, ConfigJsonMapper>();
+
         services.AddSingleton<ConfigProvider>();
 
         ServiceProvider provider = services.BuildServiceProvider();
 
         ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
-        Infrastructure.Configuration.Contracts.Config config = configProvider.Load("config.json");
+        VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
     }
 
     private static async Task PriviousVersion()
