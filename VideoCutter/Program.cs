@@ -1,17 +1,11 @@
 ﻿using Application.Configuration.Interfaces;
 using Application.Configuration.Services;
-using Config.Contracts;
-using Config.Services;
-using Core.Models;
-using Core.Services;
-using Core.Services.ServicesFactories;
 using Domain.Definitions;
-using FFMpegCore;
+using Infrastructure.Configuration.Factories;
+using Infrastructure.Configuration.Factories.Interfaces;
 using Infrastructure.Configuration.Json.Services;
-using Infrastructure.Configuration.Json.Services.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
-using VideoCutter.Extensions;
 
 namespace VideoCutter;
 
@@ -36,7 +30,7 @@ internal class Program
             IgnoreReadOnlyProperties = false,
         });
 
-        services.AddSingleton<FilterFactory>();
+        services.AddSingleton<IFilterFactory, FilterFactory>();
 
         services.AddSingleton<IConfigReader, ConfigJsonReader>();
         services.AddSingleton<IConfigParser, ConfigJsonParser>();
@@ -48,24 +42,5 @@ internal class Program
 
         ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
         VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
-    }
-
-    private static async Task PriviousVersion()
-    {
-        GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
-
-        ConfigHandler configHandler = new ConfigHandler(ConfigPath);
-        ConfigPipline config = configHandler.Load();
-
-        IEnumerable<PipelineSegmentDefinition> segmentsDefinition = config.PipeLine.ToPipelineSegmentsDefinition();
-        Core.Services.Pipeline pipeline = new PipelineFactory().Create(segmentsDefinition);
-
-        TimeSpan videoDuration = FFProbe.Analyse(config.Info.InputFilePath).Duration;
-
-        CutServiceFactory cutServiceFactory = new CutServiceFactory(config.CutService.ToCutServiceDefinition(), videoDuration);
-        VideoHandlerFactory videoHandlerFactory = new VideoHandlerFactory(pipeline, config.Info.ToSessionInfo(), cutServiceFactory);
-        VideoHandler videoHandler = videoHandlerFactory.Create();
-
-        await videoHandler.Process();
     }
 }

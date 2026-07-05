@@ -24,10 +24,7 @@ public class ConfigProvider
         string configContent = _reader.Read(path);
 
         ConfigContract configContract = _parser.Deserialize(configContent);
-        foreach(var step in configContract.PipelineDefinition.Steps)
-        {
-            Console.WriteLine(step.Type + " " + step.Parameters);
-        }
+
         VideoProcessingDefinition result = _mapper.Map(configContract);
 
         return result;
