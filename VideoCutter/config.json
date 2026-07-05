@@ -11,19 +11,10 @@
   "pipelineDefinition": {
     "steps": [
       {
-        "type": "TikTok",
-        "parameters": {
+        "type": "Resize",
+        "parameters": {          
           "width": "1080",
-          "height": "1960",
-          "radius": "11",
-          "power": "2"
-        }
-      },
-      {
-        "type": "Text",
-        "parameters": {
-          "text": "1 серия. 1 сезон. 1 часть",
-          "fontSize": "75"
+          "height": "1960"
         }
       }
     ]

@@ -8,6 +8,7 @@ using Core.Services.ServicesFactories;
 using Domain.Definitions;
 using FFMpegCore;
 using Infrastructure.Configuration.Json.Services;
+using Infrastructure.Configuration.Json.Services.Factories;
 using Microsoft.Extensions.DependencyInjection;
 using System.Text.Json;
 using VideoCutter.Extensions;
@@ -34,6 +35,8 @@ internal class Program
             PropertyNameCaseInsensitive = true,
             IgnoreReadOnlyProperties = false,
         });
+
+        services.AddSingleton<FilterFactory>();
 
         services.AddSingleton<IConfigReader, ConfigJsonReader>();
         services.AddSingleton<IConfigParser, ConfigJsonParser>();

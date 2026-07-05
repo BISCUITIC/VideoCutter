@@ -1,12 +1,23 @@
 ﻿using Application.Configuration.Contracts;
 using Application.Configuration.Interfaces;
 using Domain.Definitions;
-using Domain.Definitions.PipelineDefinition;
+using Domain.Filters.Attributes;
+using Engine.Filters;
+using Engine.Filters.Interfaces;
+using Infrastructure.Configuration.Json.Services.Factories;
+using System.Reflection;
 
 namespace Infrastructure.Configuration.Json.Services;
 
 public class ConfigJsonMapper : IConfigMapper
 {
+    private readonly FilterFactory _filterFactory;
+
+    public ConfigJsonMapper(FilterFactory filterFactory)
+    {
+        _filterFactory = filterFactory;
+    }
+
     public VideoProcessingDefinition Map(ConfigContract config)
     {
         VideoSource source = MapVideoSource(config.Info);
@@ -30,18 +41,13 @@ public class ConfigJsonMapper : IConfigMapper
     }
 
     private Pipeline MapPipeline(VideoPipelineContract contract) {
+        var filters = contract.Steps
+                             .Select(step => _filterFactory.Create(step.Type, 
+                                                                   step.Parameters))
+                             .ToList()
+                             .AsReadOnly();
         
-        IReadOnlyCollection<Segment> segments = 
-            contract.Steps.Select(step => 
-                {
-                    Type enumType = typeof(SegmentType);
-                    SegmentType type = (SegmentType)Enum.Parse(enumType, step.Type);
-                    return new Segment(type, step.Parameters);
-                }
-            )
-            .ToList()
-            .AsReadOnly();
 
-        return new Pipeline(segments);
+        return new Pipeline(filters);
     }
 }
