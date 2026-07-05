@@ -1,6 +1,4 @@
-﻿using Domain.Definitions.PipelineDefinition;
-
-namespace Domain.Definitions;
+﻿namespace Domain.Definitions;
 
 public class VideoProcessingDefinition
 {
