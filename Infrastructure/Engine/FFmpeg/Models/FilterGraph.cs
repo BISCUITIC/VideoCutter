@@ -2,5 +2,18 @@
 
 public class FilterGraph
 {
-    IReadOnlyCollection<FilterNode> Nodes { get; }
+    public IReadOnlyCollection<FilterNode> Nodes { get; }
+
+    public string? OutputVideoLabel { 
+        get =>  Nodes.LastOrDefault()?.OutputLabel;
+    }
+
+    public bool IsEmpty { 
+        get => Nodes.Count == 0; 
+    }
+
+    public FilterGraph(IReadOnlyCollection<FilterNode> nodes)
+    {
+        Nodes = nodes;                
+    }
 }

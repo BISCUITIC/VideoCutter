@@ -1,9 +1,9 @@
 ﻿using Domain.Definitions;
 using Infrastructure.Engine.FFmpeg.Models;
 
-namespace Infrastructure.Engine.FFmpeg.Services.Interfaces;
+namespace Infrastructure.Engine.FFmpeg.Interfaces;
 
-public interface IFilterGraphBuilder
+public interface IFFmpegFilterGraphBuilder
 {
     FilterGraph Build(Pipeline pipeline);
 }
