@@ -1,4 +1,4 @@
-﻿namespace Domain.Engine;
+﻿namespace Domain.Processing;
 
 public class VideoSegment
 {

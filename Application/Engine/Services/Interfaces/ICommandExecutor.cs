@@ -4,5 +4,5 @@ namespace Application.Engine.Services.Interfaces;
 
 public interface ICommandExecutor
 {
-    Task ExecuteAsync(Command command, CancellationToken cancellationToken = default)
+    Task ExecuteAsync(Command command, CancellationToken cancellationToken = default);
 }

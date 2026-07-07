@@ -5,8 +5,6 @@ VisualStudioVersion = 17.14.36301.6
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "VideoCutter", "VideoCutter\VideoCutter.csproj", "{F52C0107-47DC-4A30-8848-BC11AAB00DDC}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Config", "ConfigHandling\Config.csproj", "{CEC02CB1-3D7E-48E5-B873-EF7115181120}"
-EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "src", "src", "{36D591C7-65C7-A0D1-1CBC-10CDE441BDC8}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Infrastructure", "Infrastructure\Infrastructure.csproj", "{0DB3221F-9E98-42E9-8EEB-41E656B2E05C}"
@@ -25,10 +23,6 @@ Global
 		{F52C0107-47DC-4A30-8848-BC11AAB00DDC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{F52C0107-47DC-4A30-8848-BC11AAB00DDC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{F52C0107-47DC-4A30-8848-BC11AAB00DDC}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CEC02CB1-3D7E-48E5-B873-EF7115181120}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CEC02CB1-3D7E-48E5-B873-EF7115181120}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CEC02CB1-3D7E-48E5-B873-EF7115181120}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CEC02CB1-3D7E-48E5-B873-EF7115181120}.Release|Any CPU.Build.0 = Release|Any CPU
 		{0DB3221F-9E98-42E9-8EEB-41E656B2E05C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
 		{0DB3221F-9E98-42E9-8EEB-41E656B2E05C}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{0DB3221F-9E98-42E9-8EEB-41E656B2E05C}.Release|Any CPU.ActiveCfg = Release|Any CPU
