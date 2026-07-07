@@ -1,11 +1,13 @@
-﻿namespace Domain.Engine;
+﻿namespace Domain.Commands;
 
 public class Command
 {
-    public string Argument { get; }
+    public string Executer {  get; }
+    public IReadOnlyCollection<Argument> Arguments { get; }
 
-    public Command(string argument)
+    public Command(string executer, IReadOnlyCollection<Argument> arguments)
     {
-        Argument = argument;
+        Executer = executer;
+        Arguments = arguments;
     }
 }
