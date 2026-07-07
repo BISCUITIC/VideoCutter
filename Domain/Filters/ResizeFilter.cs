@@ -1,7 +1,7 @@
 ﻿using Domain.Filters.Attributes;
-using Engine.Filters.Interfaces;
+using Domain.Filters.Interfaces;
 
-namespace Engine.Filters;
+namespace Domain.Filters;
 
 [FilterType("Resize")]
 public class ResizeFilter : IFilter

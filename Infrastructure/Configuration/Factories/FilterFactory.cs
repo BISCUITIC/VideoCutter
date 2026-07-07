@@ -1,5 +1,5 @@
 ﻿using Domain.Filters.Attributes;
-using Engine.Filters.Interfaces;
+using Domain.Filters.Interfaces;
 using Infrastructure.Configuration.Factories.Interfaces;
 using System.Data;
 using System.Reflection;

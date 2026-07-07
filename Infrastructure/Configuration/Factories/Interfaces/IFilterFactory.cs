@@ -1,4 +1,4 @@
-﻿using Engine.Filters.Interfaces;
+﻿using Domain.Filters.Interfaces;
 
 namespace Infrastructure.Configuration.Factories.Interfaces;
 

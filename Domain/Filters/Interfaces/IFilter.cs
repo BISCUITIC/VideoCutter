@@ -1,3 +1,3 @@
-﻿namespace Engine.Filters.Interfaces;
+﻿namespace Domain.Filters.Interfaces;
 
 public interface IFilter { }
