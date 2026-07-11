@@ -2,6 +2,7 @@
 using Domain.Commands;
 using Domain.Definitions;
 using Domain.Processing;
+using Infrastructure.Engine.Common.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
 
@@ -11,15 +12,19 @@ public class FFmpegCommandBuilder : ICommandBuilder
 {
     private readonly IFFmpegFilterGraphBuilder _graphBuilder;
     private readonly IFFmpegFilterGraphSerializer _graphSerializer;
+    private readonly IOutputPathProvider _outputPathProvider;
 
-    public FFmpegCommandBuilder(IFFmpegFilterGraphBuilder graphBuilder, 
-                                IFFmpegFilterGraphSerializer graphSerializer)
+    public FFmpegCommandBuilder(IFFmpegFilterGraphBuilder graphBuilder,
+                                IFFmpegFilterGraphSerializer graphSerializer,
+                                IOutputPathProvider outputPathProvider)
     {
         _graphBuilder = graphBuilder;
         _graphSerializer = graphSerializer;
+        _outputPathProvider = outputPathProvider;
     }
 
-    public Command Build(VideoSegment segment,
+    public Command Build(int index,
+                         VideoSegment segment,
                          VideoProcessingDefinition definition)
     {
         FilterGraph filterGraph = _graphBuilder.Build(definition.Pipeline);
@@ -50,6 +55,13 @@ public class FFmpegCommandBuilder : ICommandBuilder
         {
             arguments.Add(new Argument("-map", "0:v?"));
         }
+
+        arguments.Add(
+            new Argument(
+                null, 
+                _outputPathProvider.GetOutputPath(definition, segment, index)
+            )
+        );
 
         return new Command("ffmpeg", arguments);
     }

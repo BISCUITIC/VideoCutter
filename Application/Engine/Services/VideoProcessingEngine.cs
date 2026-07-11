@@ -34,11 +34,15 @@ public class VideoProcessingEngine : IVideoProcessingEngine
         IReadOnlyCollection<VideoSegment> segments = 
             _videoSegmenter.Process(definition.Segmentation, metadata);
 
+        int index = 0;
+
         foreach (VideoSegment segment in segments)
         {
-            Command command = _commandBuilder.Build(segment, definition);
+            Command command = _commandBuilder.Build(index ,segment, definition);
 
             await _commandExecutor.ExecuteAsync(command, cancellationToken);
+
+            index++;
         }        
     }
 }
