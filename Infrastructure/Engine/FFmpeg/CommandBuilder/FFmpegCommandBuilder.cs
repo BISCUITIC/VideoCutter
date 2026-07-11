@@ -56,6 +56,8 @@ public class FFmpegCommandBuilder : ICommandBuilder
             arguments.Add(new Argument("-map", "0:v?"));
         }
 
+        arguments.Add(new Argument("-map", "0:a?"));
+
         arguments.Add(
             new Argument(
                 null,

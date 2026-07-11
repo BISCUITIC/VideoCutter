@@ -8,8 +8,10 @@ namespace Infrastructure.Engine.FFmpeg.CommandExecuter;
 public class FFmpegCommandExecuter : ICommandExecutor
 {
     public async Task ExecuteAsync(Command command,
-                             CancellationToken cancellationToken = default)
+                                   CancellationToken cancellationToken = default)
     {
+        //PrintCommand(command);
+
         ProcessStartInfo startInfo = new ProcessStartInfo
         {
             FileName = GlobalFFOptions.GetFFMpegBinaryPath(),
@@ -29,4 +31,12 @@ public class FFmpegCommandExecuter : ICommandExecutor
 
         await process.WaitForExitAsync(cancellationToken);
     }   
+
+    private void PrintCommand(Command command)
+    {
+        foreach (Argument argument in command.Arguments)
+        {
+            Console.WriteLine($"{argument.Option} - {argument.Value}");
+        }
+    }
 }
