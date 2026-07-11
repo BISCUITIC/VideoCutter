@@ -1,13 +1,14 @@
 ﻿using Domain.Definitions;
 using Domain.Processing;
+using Infrastructure.Engine.Common.Interfaces;
 
 namespace Infrastructure.Engine.Common.Services;
 
-public class OutputPathProvider
-{
-    public string GetOutputPath(VideoProcessingDefinition definition,
-                                VideoSegment segment,
-                                int segmentNumber)
+public class OutputPathProvider : IOutputPathProvider
+{ 
+    public string GetOutputPath(int segmentNumber,
+                                VideoProcessingDefinition definition,
+                                VideoSegment segment)
     {
 
         string outputFolderPath =

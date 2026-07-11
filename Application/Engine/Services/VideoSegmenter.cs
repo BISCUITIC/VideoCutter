@@ -1,9 +1,10 @@
-﻿using Domain.Definitions;
+﻿using Application.Engine.Services.Interfaces;
+using Domain.Definitions;
 using Domain.Processing;
 
 namespace Application.Engine.Services;
 
-public class VideoSegmenter
+public class VideoSegmenter : IVideoSegmenter
 {
     private int CalculateMaxChunks(VideoSegmentation segmentation,
                                    VideoMetadata metadata)

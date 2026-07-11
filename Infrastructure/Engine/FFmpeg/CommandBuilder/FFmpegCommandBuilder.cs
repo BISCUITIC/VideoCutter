@@ -58,8 +58,8 @@ public class FFmpegCommandBuilder : ICommandBuilder
 
         arguments.Add(
             new Argument(
-                null, 
-                _outputPathProvider.GetOutputPath(definition, segment, index)
+                null,
+                _outputPathProvider.GetOutputPath(index, definition, segment)
             )
         );
 

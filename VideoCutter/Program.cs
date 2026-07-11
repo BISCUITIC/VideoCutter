@@ -1,5 +1,6 @@
 ﻿using Application.Configuration.Interfaces;
 using Application.Configuration.Services;
+using Application.Engine.Services;
 using Application.Engine.Services.Interfaces;
 using Domain.Commands;
 using Domain.Definitions;
@@ -8,9 +9,12 @@ using FFMpegCore;
 using Infrastructure.Configuration.Factories;
 using Infrastructure.Configuration.Factories.Interfaces;
 using Infrastructure.Configuration.Json.Services;
+using Infrastructure.Engine.Common.Interfaces;
+using Infrastructure.Engine.Common.Services;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
+using Infrastructure.Engine.FFmpeg.CommandExecuter;
 using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
@@ -46,12 +50,16 @@ internal class Program
         services.AddSingleton<IConfigParser, ConfigJsonParser>();
         services.AddSingleton<IConfigMapper, ConfigJsonMapper>();
 
+        services.AddSingleton<IOutputPathProvider, OutputPathProvider>();
         services.AddSingleton<IFFmpegFilterGraphBuilder, FFmpegFilterGraphBuilder>();
         services.AddSingleton<IFFmpegFilterSerializer, FFmpegFilterSerializer>();
         services.AddSingleton<IFFmpegFilterGraphSerializer, FFmpegFilterGraphSerializer>();
 
         services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
+        services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
+        services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
+        services.AddSingleton<IVideoProcessingEngine, VideoProcessingEngine>();
 
         services.AddSingleton<ConfigProvider>();
 
@@ -60,14 +68,7 @@ internal class Program
         ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
         VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
 
-        ICommandBuilder commandBuilder = provider.GetRequiredService<ICommandBuilder>();
-
-        Command command = commandBuilder.Build(
-            new VideoSegment(new TimeSpan(0, 0, 10), new TimeSpan(0, 0, 20)),
-            processing
-        );
-
-        foreach (Argument arg in command.Arguments)
-            Console.Write($"{arg.Option} {arg.Value} ");
+        IVideoProcessingEngine engine = provider.GetRequiredService<IVideoProcessingEngine>();
+        await engine.ProcessingAsync(processing);
     }
 }

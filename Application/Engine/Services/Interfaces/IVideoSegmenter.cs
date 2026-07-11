@@ -1,0 +1,9 @@
+﻿using Domain.Definitions;
+using Domain.Processing;
+
+namespace Application.Engine.Services.Interfaces;
+
+public interface IVideoSegmenter
+{
+    IReadOnlyCollection<VideoSegment> Process(VideoSegmentation segmentation, VideoMetadata metadata);
+}

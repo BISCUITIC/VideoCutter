@@ -8,21 +8,22 @@ namespace Application.Engine.Services;
 public class VideoProcessingEngine : IVideoProcessingEngine
 {
     private readonly IVideoMetadataReader _metadataReader;
+    private readonly IVideoSegmenter _videoSegmenter;
+
     private readonly ICommandBuilder _commandBuilder;
     private readonly ICommandExecutor _commandExecutor;
 
-    private readonly VideoSegmenter _videoSegmenter;
 
     public VideoProcessingEngine(IVideoMetadataReader metadataReader,
+                                 IVideoSegmenter videoSegmentor,
                                  ICommandBuilder commandBuilder,
-                                 ICommandExecutor commandExecutor,
-                                 VideoSegmenter videoSegmentor)
+                                 ICommandExecutor commandExecutor)
     {
         _metadataReader = metadataReader;
+        _videoSegmenter = videoSegmentor;
+
         _commandBuilder = commandBuilder;
         _commandExecutor = commandExecutor;
-
-        _videoSegmenter = videoSegmentor;
     }
 
     public async Task ProcessingAsync(VideoProcessingDefinition definition, 
