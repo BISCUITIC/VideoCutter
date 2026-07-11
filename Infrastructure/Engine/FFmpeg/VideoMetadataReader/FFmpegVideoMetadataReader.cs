@@ -6,7 +6,8 @@ namespace Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 
 public class FFmpegVideoMetadataReader : IVideoMetadataReader
 {
-    public async Task<VideoMetadata> ReadAsync(string inputFilePath)
+    public async Task<VideoMetadata> ReadAsync(string inputFilePath, 
+                                               CancellationToken cancellationToken = default)
     {
         IMediaAnalysis mediaInfo = await FFProbe.AnalyseAsync(inputFilePath);
 

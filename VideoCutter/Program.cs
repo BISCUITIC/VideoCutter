@@ -58,6 +58,16 @@ internal class Program
         ServiceProvider provider = services.BuildServiceProvider();
 
         ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
-        VideoProcessingDefinition processing = configProvider.Load(ConfigPath);                     
+        VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
+
+        ICommandBuilder commandBuilder = provider.GetRequiredService<ICommandBuilder>();
+
+        Command command = commandBuilder.Build(
+            new VideoSegment(new TimeSpan(0, 0, 10), new TimeSpan(0, 0, 20)),
+            processing
+        );
+
+        foreach (Argument arg in command.Arguments)
+            Console.Write($"{arg.Option} {arg.Value} ");
     }
 }
