@@ -1,4 +1,4 @@
-﻿namespace Infrastructure.Engine.FFmpeg.Models;
+﻿namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
 
 public class FilterGraph
 {

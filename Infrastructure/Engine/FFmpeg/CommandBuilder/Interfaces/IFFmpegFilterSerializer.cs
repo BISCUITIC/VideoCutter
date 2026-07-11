@@ -1,6 +1,6 @@
 ﻿using Domain.Filters.Interfaces;
 
-namespace Infrastructure.Engine.FFmpeg.Interfaces;
+namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 
 public interface IFFmpegFilterSerializer
 {

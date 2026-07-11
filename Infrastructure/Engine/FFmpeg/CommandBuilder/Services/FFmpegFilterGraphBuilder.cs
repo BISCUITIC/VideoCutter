@@ -1,9 +1,9 @@
 ﻿using Domain.Definitions;
 using Domain.Filters.Interfaces;
-using Infrastructure.Engine.FFmpeg.Interfaces;
-using Infrastructure.Engine.FFmpeg.Models;
+using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
+using Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
 
-namespace Infrastructure.Engine.FFmpeg.Services;
+namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
 
 public class FFmpegFilterGraphBuilder : IFFmpegFilterGraphBuilder
 {

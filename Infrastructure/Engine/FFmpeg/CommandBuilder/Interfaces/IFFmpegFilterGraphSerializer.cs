@@ -1,6 +1,6 @@
-﻿using Infrastructure.Engine.FFmpeg.Models;
+﻿using Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
 
-namespace Infrastructure.Engine.FFmpeg.Interfaces;
+namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 
 public interface IFFmpegFilterGraphSerializer
 {
