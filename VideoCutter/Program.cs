@@ -4,13 +4,16 @@ using Application.Engine.Services.Interfaces;
 using Domain.Commands;
 using Domain.Definitions;
 using Domain.Processing;
+using FFMpegCore;
 using Infrastructure.Configuration.Factories;
 using Infrastructure.Configuration.Factories.Interfaces;
 using Infrastructure.Configuration.Json.Services;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
+using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
+using System.Data;
 using System.Text.Json;
 namespace VideoCutter;
 
@@ -25,8 +28,10 @@ internal class Program
     private static readonly string ConfigPath = Path.Combine(AppContext.BaseDirectory,
                                                              "config.json");
 
-    private static void Main(string[] args)
+    private static async Task Main(string[] args)
     {
+        GlobalFFOptions.Configure(options => options.BinaryFolder = BinaryFolderPath);
+
         ServiceCollection services = new ServiceCollection();
 
         services.AddSingleton(provider => new JsonSerializerOptions()
@@ -45,6 +50,7 @@ internal class Program
         services.AddSingleton<IFFmpegFilterSerializer, FFmpegFilterSerializer>();
         services.AddSingleton<IFFmpegFilterGraphSerializer, FFmpegFilterGraphSerializer>();
 
+        services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
 
         services.AddSingleton<ConfigProvider>();
@@ -52,16 +58,6 @@ internal class Program
         ServiceProvider provider = services.BuildServiceProvider();
 
         ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
-        VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
-
-        ICommandBuilder commandBuilder = provider.GetRequiredService<ICommandBuilder>();
-        
-        Command command = commandBuilder.Build(
-            new VideoSegment(new TimeSpan(0, 0, 10), new TimeSpan(0, 0, 20)), 
-            processing
-        );
-
-        foreach(Argument arg in command.Arguments)
-            Console.Write($"{arg.Option} {arg.Value} ");        
+        VideoProcessingDefinition processing = configProvider.Load(ConfigPath);                     
     }
 }

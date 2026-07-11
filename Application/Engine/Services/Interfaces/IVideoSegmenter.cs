@@ -5,5 +5,6 @@ namespace Application.Engine.Services.Interfaces;
 
 public interface IVideoSegmenter
 {
-    IReadOnlyCollection<VideoSegment> Process(VideoSegmentation segmentation);
+    IReadOnlyCollection<VideoSegment> Process(VideoSegmentation segmentation,
+                                              VideoMetadata videoMetadata);
 }

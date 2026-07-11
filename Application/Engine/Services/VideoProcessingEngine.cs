@@ -7,14 +7,17 @@ namespace Application.Engine.Services;
 
 public class VideoProcessingEngine : IVideoProcessingEngine
 {
+    private readonly IVideoMetadataReader _metadataReader;
     private readonly IVideoSegmenter _videoSegmenter;
     private readonly ICommandBuilder _commandBuilder;
     private readonly ICommandExecutor _commandExecutor;
 
-    public VideoProcessingEngine(IVideoSegmenter videoSegmentor,
+    public VideoProcessingEngine(IVideoMetadataReader metadataReader,
+                                 IVideoSegmenter videoSegmentor,
                                  ICommandBuilder commandBuilder,
                                  ICommandExecutor commandExecutor)
     {
+        _metadataReader = metadataReader;
         _videoSegmenter = videoSegmentor;
         _commandBuilder = commandBuilder;
         _commandExecutor = commandExecutor;
@@ -23,8 +26,11 @@ public class VideoProcessingEngine : IVideoProcessingEngine
     public async Task ProcessingAsync(VideoProcessingDefinition definition, 
                                       CancellationToken cancellationToken = default)
     {
+        VideoMetadata metadata = 
+            await _metadataReader.ReadAsync(definition.Source.InputFilePath);
+
         IReadOnlyCollection<VideoSegment> segments = 
-            _videoSegmenter.Process(definition.Segmentation);
+            _videoSegmenter.Process(definition.Segmentation, metadata);
 
         foreach (VideoSegment segment in segments)
         {
