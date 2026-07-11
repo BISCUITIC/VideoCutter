@@ -7,15 +7,15 @@ namespace Application.Engine.Services;
 
 public class VideoProcessingEngine : IVideoProcessingEngine
 {
-    private readonly IVideoSegmentor _videoSegmentor;
+    private readonly IVideoSegmenter _videoSegmenter;
     private readonly ICommandBuilder _commandBuilder;
     private readonly ICommandExecutor _commandExecutor;
 
-    public VideoProcessingEngine(IVideoSegmentor videoSegmentor,
+    public VideoProcessingEngine(IVideoSegmenter videoSegmentor,
                                  ICommandBuilder commandBuilder,
                                  ICommandExecutor commandExecutor)
     {
-        _videoSegmentor = videoSegmentor;
+        _videoSegmenter = videoSegmentor;
         _commandBuilder = commandBuilder;
         _commandExecutor = commandExecutor;
     }
@@ -24,7 +24,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
                                       CancellationToken cancellationToken = default)
     {
         IReadOnlyCollection<VideoSegment> segments = 
-            _videoSegmentor.Process(definition.Segmentation);
+            _videoSegmenter.Process(definition.Segmentation);
 
         foreach (VideoSegment segment in segments)
         {

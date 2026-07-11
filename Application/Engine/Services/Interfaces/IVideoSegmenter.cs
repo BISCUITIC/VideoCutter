@@ -3,7 +3,7 @@ using Domain.Processing;
 
 namespace Application.Engine.Services.Interfaces;
 
-public interface IVideoSegmentor
+public interface IVideoSegmenter
 {
     IReadOnlyCollection<VideoSegment> Process(VideoSegmentation segmentation);
 }
