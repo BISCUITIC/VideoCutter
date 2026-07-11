@@ -2,9 +2,9 @@
 
 public class VideoProcessingDefinition
 {
-    public VideoSource Source { get; init; }
-    public VideoSegmentation Segmentation { get; init; }
-    public Pipeline Pipeline {  get; init; }
+    public VideoSource Source { get; }
+    public VideoSegmentation Segmentation { get; }
+    public Pipeline Pipeline {  get; }
 
     public VideoProcessingDefinition(VideoSource source, VideoSegmentation segmentation, Pipeline pipeline)
     {

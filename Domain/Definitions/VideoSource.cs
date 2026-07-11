@@ -2,8 +2,8 @@
 
 public class VideoSource
 {
-    public string InputFilePath { get; init; }
-    public string OutputFolderPath { get; init; }
+    public string InputFilePath { get; }
+    public string OutputFolderPath { get; }
 
     public VideoSource(string inputFilePath, string outputFolderPath)
     {
