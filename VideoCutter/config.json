@@ -4,7 +4,7 @@
     "outputFolderPath": "C:\\Users\\Dima\\Проекты\\Visual Studio\\VideoCutter\\VideoCutter\\bin\\Debug\\net9.0\\Test\\Ouput"
   },
   "segmentation": {
-    "chunkDuration": "00:00:5",
+    "chunkDuration": "00:00:20",
     "offset": "00:00:00"
   },
   "pipelineDefinition": {

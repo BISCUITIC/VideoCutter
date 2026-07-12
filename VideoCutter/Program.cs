@@ -20,6 +20,7 @@ using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Text.Json;
+using VideoCutter.Extensions;
 using VideoCutter.Progress;
 namespace VideoCutter;
 
@@ -46,25 +47,8 @@ internal class Program
             IgnoreReadOnlyProperties = false,
         });
 
-        services.AddSingleton<IFilterFactory, FilterFactory>();
-
-        services.AddSingleton<IConfigReader, ConfigJsonReader>();
-        services.AddSingleton<IConfigParser, ConfigJsonParser>();
-        services.AddSingleton<IConfigMapper, ConfigJsonMapper>();
-
-        services.AddSingleton<IOutputPathProvider, OutputPathProvider>();
-        services.AddSingleton<IFFmpegFilterGraphBuilder, FFmpegFilterGraphBuilder>();
-        services.AddSingleton<IFFmpegFilterSerializer, FFmpegFilterSerializer>();
-        services.AddSingleton<IFFmpegFilterGraphSerializer, FFmpegFilterGraphSerializer>();
-
-        services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
-        services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
-        services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
-        services.AddSingleton<ICommandExecutor, FakeCommandExecutor>();
-        services.AddSingleton<IProgressHandler, ConsoleProgressHandler>();
-        services.AddSingleton<IVideoProcessingEngine, VideoProcessingEngine>();
-
-        services.AddSingleton<ConfigProvider>();
+        services.AddJsonConfiguration();
+        services.AddFFmpegApplication();                       
 
         ServiceProvider provider = services.BuildServiceProvider();
 

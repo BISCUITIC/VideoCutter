@@ -42,7 +42,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
 
         IReadOnlyCollection<VideoSegment> segments = 
             _videoSegmenter.Process(definition.Segmentation, metadata);
-
+       
         IEnumerable<Task> processingTasks = 
             segments.Select(
                 (segment, index) => 
@@ -51,7 +51,11 @@ public class VideoProcessingEngine : IVideoProcessingEngine
                     )
             );
 
+        _progressHandler.Start(segments.Count);
+
         await Task.WhenAll(processingTasks);
+
+        _progressHandler.Finish();
     }
 
     private async Task ProcessSegmentAsync(int index,
