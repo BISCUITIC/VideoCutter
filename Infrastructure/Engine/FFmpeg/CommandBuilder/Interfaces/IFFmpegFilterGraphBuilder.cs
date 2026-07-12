@@ -1,7 +1,7 @@
 ﻿using Domain.Definitions;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
+using Infrastructure.Engine.FFmpeg.CommandBuilder.Models;
 
-namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
+namespace Infrastructure.Engine.FFmpeg.CommandBuilder.Interfaces;
 
 public interface IFFmpegFilterGraphBuilder
 {

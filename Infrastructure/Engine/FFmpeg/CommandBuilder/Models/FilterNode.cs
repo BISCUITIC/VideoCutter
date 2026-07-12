@@ -1,6 +1,6 @@
 ﻿using Domain.Filters.Interfaces;
 
-namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
+namespace Infrastructure.Engine.FFmpeg.CommandBuilder.Models;
 
 public class FilterNode
 {

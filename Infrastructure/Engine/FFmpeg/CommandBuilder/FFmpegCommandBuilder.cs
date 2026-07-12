@@ -3,10 +3,10 @@ using Domain.Commands;
 using Domain.Definitions;
 using Domain.Processing;
 using Infrastructure.Engine.Common.Interfaces;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder.Models;
+using Infrastructure.Engine.FFmpeg.CommandBuilder.Interfaces;
+using Infrastructure.Engine.FFmpeg.CommandBuilder.Models;
 
-namespace Infrastructure.Engine.FFmpeg.CommadnBuilder;
+namespace Infrastructure.Engine.FFmpeg.CommandBuilder;
 
 public class FFmpegCommandBuilder : ICommandBuilder
 {

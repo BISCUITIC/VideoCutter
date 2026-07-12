@@ -1,8 +1,8 @@
 ﻿using Domain.Filters;
 using Domain.Filters.Interfaces;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
+using Infrastructure.Engine.FFmpeg.CommandBuilder.Interfaces;
 
-namespace Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
+namespace Infrastructure.Engine.FFmpeg.CommandBuilder.Services;
 
 public class FFmpegFilterSerializer : IFFmpegFilterSerializer
 {

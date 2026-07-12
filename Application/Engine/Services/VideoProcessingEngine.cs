@@ -8,7 +8,7 @@ namespace Application.Engine.Services;
 public class VideoProcessingEngine : IVideoProcessingEngine
 {
     private readonly IVideoMetadataReader _metadataReader;
-    private readonly IVideoSegmenter _videoSegmenter;
+    private readonly IVideoSegmentor _videoSegmenter;
 
     private readonly ICommandBuilder _commandBuilder;
     private readonly ICommandExecutor _commandExecutor;
@@ -18,7 +18,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
     private readonly SemaphoreSlim _semaphore;
 
     public VideoProcessingEngine(IVideoMetadataReader metadataReader,
-                                 IVideoSegmenter videoSegmentor,
+                                 IVideoSegmentor videoSegmentor,
                                  ICommandBuilder commandBuilder,
                                  ICommandExecutor commandExecutor,
                                  IProgressHandler progressHandler)

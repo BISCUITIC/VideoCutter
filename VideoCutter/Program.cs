@@ -49,8 +49,8 @@ internal class Program
 
         services.AddJsonConfiguration();
         services.AddConsoleProgressHandler();
-        services.AddFFmpegApplication();
+        services.AddFFmpegProcessing();
 
-        services.BuildProcessingEngine();
+        services.AddProcessingEngine();
     }
 }
