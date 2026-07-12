@@ -13,6 +13,7 @@ using Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
 using Infrastructure.Engine.FFmpeg.CommandExecuter;
 using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
+using System;
 using VideoCutter.Progress;
 
 namespace VideoCutter.Extensions;
@@ -30,28 +31,29 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IConfigProvider, ConfigProvider>();
     }
 
-    public static void AddFFmpegApplication(this ServiceCollection services)
-    {
-        services.AddFFmpegInfrastructure();
-
-        services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
-        services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
-
-        services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
-        services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
-
-        services.AddSingleton<IProgressHandler, ConsoleProgressHandler>();
-
-        services.AddSingleton<IVideoProcessingEngine, VideoProcessingEngine>();
+    public static void AddConsoleProgressHandler(this ServiceCollection services)
+    {        
+        services.AddSingleton<IProgressHandler, ConsoleProgressHandler>();      
     }
 
-    public static void AddFFmpegInfrastructure(this ServiceCollection services)
+    public static void AddFFmpegApplication(this ServiceCollection services)
     {
         services.AddCommonInfrastructure();
 
         services.AddSingleton<IFFmpegFilterGraphBuilder, FFmpegFilterGraphBuilder>();
         services.AddSingleton<IFFmpegFilterSerializer, FFmpegFilterSerializer>();
         services.AddSingleton<IFFmpegFilterGraphSerializer, FFmpegFilterGraphSerializer>();
+
+        services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
+        services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
+
+        services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
+        services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();       
+    }
+
+    public static void BuildProcessingEngine(this ServiceCollection services)
+    {
+        services.AddSingleton<IVideoProcessingEngine, VideoProcessingEngine>();
     }
 
     public static void AddCommonInfrastructure(this ServiceCollection services)

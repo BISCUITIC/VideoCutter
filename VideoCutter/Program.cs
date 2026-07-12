@@ -24,14 +24,7 @@ internal class Program
 
         ServiceCollection services = new ServiceCollection();
 
-        services.AddSingleton(provider => new JsonSerializerOptions()
-        {
-            PropertyNameCaseInsensitive = true,
-            IgnoreReadOnlyProperties = false,
-        });
-
-        services.AddJsonConfiguration();
-        services.AddFFmpegApplication();
+        Setup(services);        
 
         ServiceProvider provider = services.BuildServiceProvider();
 
@@ -44,5 +37,20 @@ internal class Program
         CancellationToken token = tokenSource.Token;
 
         await engine.ProcessingAsync(processing, token);
+    }
+
+    public static void Setup(ServiceCollection services)
+    {       
+        services.AddSingleton(provider => new JsonSerializerOptions()
+        {
+            PropertyNameCaseInsensitive = true,
+            IgnoreReadOnlyProperties = false,
+        });
+
+        services.AddJsonConfiguration();
+        services.AddConsoleProgressHandler();
+        services.AddFFmpegApplication();
+
+        services.BuildProcessingEngine();
     }
 }
