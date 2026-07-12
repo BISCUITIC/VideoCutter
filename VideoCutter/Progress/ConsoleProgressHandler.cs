@@ -1,39 +1,59 @@
 ﻿using Application.Engine.Services.Interfaces;
+using System.Data;
+using VideoCutter.Progress.Interfaces;
 
 namespace VideoCutter.Progress;
 
 internal class ConsoleProgressHandler : IProgressHandler
 {
-    private const int MaxVisibleBars = 10;
-    private const int ProgressBarWidth = 25;
 
-    private double[] _progress;    
+    private const int MaxVisibleBars = 10;    
 
-    private int _totalSegments;
-    private int _totalVisibleBars;
+    private readonly IProgressBar _progressBar;
+
+    private double[] _progress;
+    private bool[] _completed;
+
+    private int _totalSegmentsCount;
+    private int _completedSegmentsCount;
+
+    private int _visibleBarsCount;
 
     private readonly Lock _lock;
 
-    public ConsoleProgressHandler()
+    private double GetTotalProgressPercentage =>
+        (double)_completedSegmentsCount / _totalSegmentsCount * 100;
+
+    public ConsoleProgressHandler(IProgressBar progressBar)
     {            
+        _progressBar = progressBar;
         _lock = new Lock();
     }
 
     public void Start(int totalSegments)
     {
-        _totalSegments = totalSegments;
-        _totalVisibleBars = Math.Min(MaxVisibleBars, totalSegments);
+        _totalSegmentsCount = totalSegments;
+        _completedSegmentsCount = 0;
 
-        _progress = new double[_totalSegments];
+        _visibleBarsCount = Math.Min(MaxVisibleBars, totalSegments);
+
+        _progress = new double[_totalSegmentsCount];
+        _completed = new bool[_totalSegmentsCount];
 
         Console.CursorVisible = false;
-    }
+    }    
 
-    public void Handle(int segmentIndex, double percentage)
+    public void Handle(int index, double percentage)
     {
         using (_lock.EnterScope())
         {
-            _progress[segmentIndex] = percentage;
+            if(IsSegmentBecomeCompleted(index, percentage))
+            {
+                _completedSegmentsCount++;
+                _completed[index] = true;
+            }
+
+            UpdatePercentage(index, percentage);
 
             Display();
         }
@@ -47,66 +67,64 @@ internal class ConsoleProgressHandler : IProgressHandler
     private void Display()
     {
         DisplayGeneralInfo(0, 0);
-        DisplayProgressBars(0, 3);
-
-        Console.SetCursorPosition(0, 29);
+        DisplayProgressBars(0, 2);
     }    
 
     private void DisplayGeneralInfo(int left, int top)
     {
-        int numberСompleted = 0;
-
-        for (int index = 0; index < _progress.Length; index++)
-        {
-            if (_progress[index] >= 100)
-                numberСompleted++;
-        }
-
-        Console.SetCursorPosition(left, top);
-
-        DisplayProgressBar("Total progress", (double)numberСompleted / _totalSegments * 100);
+        _progressBar.Display(
+            left, top, "Total progress", GetTotalProgressPercentage
+        );
     }
 
     private void DisplayProgressBars(int left, int top)
     {
-        int visibleBarIndex = 0;
+        int visibleBarIndex = 0;       
 
-        Console.SetCursorPosition(left, top);
         for (int index = 0; index < _progress.Length; index++)
         {
-            if (_progress[index] >= 100 || _progress[index] == 0)
+            if (!IsSegmentProcessing(index))
                 continue;
 
             visibleBarIndex++;
 
-            if (visibleBarIndex > _totalVisibleBars)
+            if (visibleBarIndex > _visibleBarsCount)
                 return;
 
-            DisplayProgressBar($" [{index:000}] ", _progress[index]);
-            Console.WriteLine();
+            _progressBar.Display(
+                left, top + visibleBarIndex, $" [{index:000}] ", _progress[index]
+            );
         }
 
-        for(int i = visibleBarIndex; i < _totalVisibleBars; i++)
-            ClearLine(top + i);
+        ClearСompleteBars(left, top, visibleBarIndex);
     }
 
-    private void DisplayProgressBar(string label, double percentage)
+    private void ClearСompleteBars(int left, int top, int visibleBarIndex)
     {
-        int filledPart = (int)Math.Round(ProgressBarWidth * percentage / 100.0);
-        int emptyPart = ProgressBarWidth - filledPart;                       
-
-        Console.Write(label);
-
-        Console.Write(" [");
-        Console.Write(new string('■', filledPart));
-        Console.Write(new string('-', emptyPart));
-        Console.Write("] ");
-
-        Console.Write($"{percentage,5:F1} %");
+        for (int i = visibleBarIndex + 1; i < _visibleBarsCount; i++)
+        {
+            Console.SetCursorPosition(left, top + i);
+            Console.Write(new string(' ', Console.BufferWidth - left));
+        }
     }
 
-    private static void ClearLine(int top)
+    private bool IsSegmentProcessing(int index)
     {
-        Console.WriteLine(new string(' ', Console.BufferWidth), top);
+        return _progress[index] != 0 && _completed[index] == false;
+    }
+
+    private bool IsSegmentBecomeCompleted(int index, double newPercentage)
+    {
+        double previousPersentage = _progress[index];
+
+        if (previousPersentage < newPercentage && newPercentage == 100)
+            return true;
+
+        return false;
+    }
+
+    private void UpdatePercentage(int index, double newPercentage)
+    {
+        _progress[index] = newPercentage;
     }
 }

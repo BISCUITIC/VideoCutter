@@ -7,6 +7,7 @@ using Infrastructure.Configuration.Factories.Interfaces;
 using Infrastructure.Configuration.Json.Services;
 using Infrastructure.Engine.Common.Interfaces;
 using Infrastructure.Engine.Common.Services;
+using Infrastructure.Engine.Fake;
 using Infrastructure.Engine.FFmpeg.CommandBuilder;
 using Infrastructure.Engine.FFmpeg.CommandBuilder.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommandBuilder.Services;
@@ -14,6 +15,7 @@ using Infrastructure.Engine.FFmpeg.CommandExecuter;
 using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
 using VideoCutter.Progress;
+using VideoCutter.Progress.Interfaces;
 
 namespace VideoCutter.Extensions;
 
@@ -32,6 +34,7 @@ internal static class ServiceCollectionExtensions
 
     public static void AddConsoleProgressHandler(this IServiceCollection services)
     {
+        services.AddTransient<IProgressBar, ConsoleProgressBar>();
         services.AddTransient<IProgressHandler, ConsoleProgressHandler>();
     }
 
@@ -47,7 +50,7 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IVideoSegmentor, VideoSegmentor>();
 
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
-        services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
+        services.AddSingleton<ICommandExecutor, FakeCommandExecutor>();
     }
 
     public static void AddProcessingEngine(this IServiceCollection services)
