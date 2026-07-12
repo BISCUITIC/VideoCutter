@@ -34,7 +34,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
         _semaphore = new SemaphoreSlim(5, 5);
     }
 
-    public async Task ProcessingAsync(VideoProcessingDefinition definition, 
+    public async Task ProcessingAsync(VideoProcessing definition, 
                                       CancellationToken cancellationToken = default)
     {
         VideoMetadata metadata = 
@@ -60,7 +60,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
 
     private async Task ProcessSegmentAsync(int index,
                                            VideoSegment segment,
-                                           VideoProcessingDefinition definition,
+                                           VideoProcessing definition,
                                            CancellationToken cancellationToken)
     {
         await _semaphore.WaitAsync(cancellationToken);

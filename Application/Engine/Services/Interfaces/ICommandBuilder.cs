@@ -6,5 +6,5 @@ namespace Application.Engine.Services.Interfaces;
 
 public interface ICommandBuilder
 {
-    Command Build(int index, VideoSegment segment, VideoProcessingDefinition definition);
+    Command Build(int index, VideoSegment segment, VideoProcessing definition);
 }

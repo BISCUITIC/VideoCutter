@@ -14,13 +14,13 @@ public class ConfigJsonMapper : IConfigMapper
         _filterFactory = filterFactory;
     }
 
-    public VideoProcessingDefinition Map(ConfigContract config)
+    public VideoProcessing Map(ConfigContract config)
     {
         VideoSource source = MapVideoSource(config.Info);
         VideoSegmentation segmentation = MapVideoSegmentation(config.Segmentation);
         Pipeline pipeline = MapPipeline(config.PipelineDefinition);
 
-        return new VideoProcessingDefinition(source, segmentation, pipeline);
+        return new VideoProcessing(source, segmentation, pipeline);
     }
 
     private VideoSource MapVideoSource(VideoSourceContract contract)

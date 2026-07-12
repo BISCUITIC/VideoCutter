@@ -7,7 +7,7 @@ namespace Infrastructure.Engine.Common.Services;
 public class OutputPathProvider : IOutputPathProvider
 { 
     public string GetOutputPath(int segmentNumber,
-                                VideoProcessingDefinition definition,
+                                VideoProcessing definition,
                                 VideoSegment segment)
     {
 

@@ -25,7 +25,7 @@ public class FFmpegCommandBuilder : ICommandBuilder
 
     public Command Build(int index,
                          VideoSegment segment,
-                         VideoProcessingDefinition definition)
+                         VideoProcessing definition)
     {
         FilterGraph filterGraph = _graphBuilder.Build(definition.Pipeline);
 

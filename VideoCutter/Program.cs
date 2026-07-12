@@ -52,8 +52,8 @@ internal class Program
 
         ServiceProvider provider = services.BuildServiceProvider();
 
-        ConfigProvider configProvider = provider.GetRequiredService<ConfigProvider>();
-        VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
+        IConfigProvider configProvider = provider.GetRequiredService<IConfigProvider>();
+        VideoProcessing processing = configProvider.Load(ConfigPath);
 
         IVideoProcessingEngine engine = provider.GetRequiredService<IVideoProcessingEngine>();
 

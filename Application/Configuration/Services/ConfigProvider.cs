@@ -4,7 +4,7 @@ using Domain.Definitions;
 
 namespace Application.Configuration.Services;
 
-public class ConfigProvider
+public class ConfigProvider : IConfigProvider
 {
     private readonly IConfigReader _reader;
     private readonly IConfigParser _parser;
@@ -19,13 +19,13 @@ public class ConfigProvider
         _mapper = mapper;
     }
 
-    public VideoProcessingDefinition Load(string path)
+    public VideoProcessing Load(string path)
     {
         string configContent = _reader.Read(path);
 
         ConfigContract configContract = _parser.Deserialize(configContent);
 
-        VideoProcessingDefinition result = _mapper.Map(configContract);
+        VideoProcessing result = _mapper.Map(configContract);
 
         return result;
     }

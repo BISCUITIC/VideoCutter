@@ -28,7 +28,7 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IConfigParser, ConfigJsonParser>();
         services.AddSingleton<IConfigMapper, ConfigJsonMapper>();
 
-        services.AddSingleton<ConfigProvider>();
+        services.AddSingleton<IConfigProvider, ConfigProvider>();
     }
 
     public static void AddFFmpegApplication(this ServiceCollection services)

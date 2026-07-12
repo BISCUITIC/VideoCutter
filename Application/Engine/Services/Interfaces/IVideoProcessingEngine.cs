@@ -4,6 +4,6 @@ namespace Application.Engine.Services.Interfaces;
 
 public interface IVideoProcessingEngine
 {
-    Task ProcessingAsync(VideoProcessingDefinition definition, 
+    Task ProcessingAsync(VideoProcessing definition, 
                          CancellationToken cancellationToken = default);
 }
