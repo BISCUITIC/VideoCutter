@@ -1,27 +1,10 @@
 ﻿using Application.Configuration.Interfaces;
-using Application.Configuration.Services;
-using Application.Engine.Services;
 using Application.Engine.Services.Interfaces;
-using Domain.Commands;
 using Domain.Definitions;
-using Domain.Processing;
 using FFMpegCore;
-using Infrastructure.Configuration.Factories;
-using Infrastructure.Configuration.Factories.Interfaces;
-using Infrastructure.Configuration.Json.Services;
-using Infrastructure.Engine.Common.Interfaces;
-using Infrastructure.Engine.Common.Services;
-using Infrastructure.Engine.Fake;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
-using Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
-using Infrastructure.Engine.FFmpeg.CommandExecuter;
-using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
-using System.Data;
 using System.Text.Json;
 using VideoCutter.Extensions;
-using VideoCutter.Progress;
 namespace VideoCutter;
 
 internal class Program
@@ -48,7 +31,7 @@ internal class Program
         });
 
         services.AddJsonConfiguration();
-        services.AddFFmpegApplication();                       
+        services.AddFFmpegApplication();
 
         ServiceProvider provider = services.BuildServiceProvider();
 
@@ -60,6 +43,6 @@ internal class Program
         using CancellationTokenSource tokenSource = new CancellationTokenSource();
         CancellationToken token = tokenSource.Token;
 
-        await engine.ProcessingAsync(processing, token);        
+        await engine.ProcessingAsync(processing, token);
     }
 }

@@ -7,7 +7,6 @@ using Infrastructure.Configuration.Factories.Interfaces;
 using Infrastructure.Configuration.Json.Services;
 using Infrastructure.Engine.Common.Interfaces;
 using Infrastructure.Engine.Common.Services;
-using Infrastructure.Engine.Fake;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
@@ -37,7 +36,7 @@ internal static class ServiceCollectionExtensions
 
         services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
         services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
-        
+
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
         services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
 
