@@ -11,6 +11,7 @@ using Infrastructure.Configuration.Factories.Interfaces;
 using Infrastructure.Configuration.Json.Services;
 using Infrastructure.Engine.Common.Interfaces;
 using Infrastructure.Engine.Common.Services;
+using Infrastructure.Engine.Fake;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Interfaces;
 using Infrastructure.Engine.FFmpeg.CommadnBuilder.Services;
@@ -59,7 +60,7 @@ internal class Program
         services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
         services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
-        services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
+        services.AddSingleton<ICommandExecutor, FakeCommandExecutor>();
         services.AddSingleton<IProgressHandler, ConsoleProgressHandler>();
         services.AddSingleton<IVideoProcessingEngine, VideoProcessingEngine>();
 
@@ -75,7 +76,6 @@ internal class Program
         using CancellationTokenSource tokenSource = new CancellationTokenSource();
         CancellationToken token = tokenSource.Token;
 
-        await engine.ProcessingAsync(processing, token);
-        
+        await engine.ProcessingAsync(processing, token);        
     }
 }

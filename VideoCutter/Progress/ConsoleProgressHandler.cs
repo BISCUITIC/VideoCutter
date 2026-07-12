@@ -8,6 +8,7 @@ internal class ConsoleProgressHandler : IProgressHandler
     private readonly Lock _lock;
 
     private readonly int _cursorTop;
+    private readonly int _cursorLeft;
     private readonly int _progressBarWidth;
 
     public ConsoleProgressHandler()
@@ -16,18 +17,18 @@ internal class ConsoleProgressHandler : IProgressHandler
         _lock = new Lock();
 
         _cursorTop = Console.CursorTop;
+        _cursorLeft = 0;
         _progressBarWidth = 25;
     }
 
     private int CountBarPosition(int index) => index + _cursorTop;
 
-    private void DrawProgressBar(int position, int index, double percentage)
+    private void DrawProgressBar(int index, double percentage)
     {
-
         int filledPart = (int)Math.Round(_progressBarWidth * percentage / 100.0);
         int emptyPart = _progressBarWidth - filledPart;
-
-        Console.SetCursorPosition(0, position);
+        
+        Console.SetCursorPosition(_cursorLeft, CountBarPosition(index));        
         Console.CursorVisible = false;
 
         Console.Write($"Сегмент {index:000}");
@@ -45,7 +46,7 @@ internal class ConsoleProgressHandler : IProgressHandler
         foreach (int index in _progress.Keys)
         {
             _progress.TryGetValue(index, out double progress);
-            DrawProgressBar(CountBarPosition(index), index, progress);
+            DrawProgressBar(index, progress);
         }
     }
 
