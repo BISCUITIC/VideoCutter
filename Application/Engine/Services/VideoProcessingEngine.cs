@@ -13,12 +13,15 @@ public class VideoProcessingEngine : IVideoProcessingEngine
     private readonly ICommandBuilder _commandBuilder;
     private readonly ICommandExecutor _commandExecutor;
 
-    private readonly SemaphoreSlim _semaphore;   
+    private readonly IProgressHandler _progressHandler;
+
+    private readonly SemaphoreSlim _semaphore;
 
     public VideoProcessingEngine(IVideoMetadataReader metadataReader,
                                  IVideoSegmenter videoSegmentor,
                                  ICommandBuilder commandBuilder,
-                                 ICommandExecutor commandExecutor)
+                                 ICommandExecutor commandExecutor,
+                                 IProgressHandler progressHandler)
     {
         _metadataReader = metadataReader;
         _videoSegmenter = videoSegmentor;
@@ -26,12 +29,9 @@ public class VideoProcessingEngine : IVideoProcessingEngine
         _commandBuilder = commandBuilder;
         _commandExecutor = commandExecutor;
 
-        _semaphore = new SemaphoreSlim(5, 5);
-    }
+        _progressHandler = progressHandler;
 
-    private static void HandleProgress(int index, double percentage)
-    {
-        Console.WriteLine($"Обработано {index + 1}: {percentage:F0}%");
+        _semaphore = new SemaphoreSlim(5, 5);
     }
 
     public async Task ProcessingAsync(VideoProcessingDefinition definition, 
@@ -71,7 +71,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
             await _commandExecutor.ExecuteAsync(
                 command,
                 segment,
-                percentage => HandleProgress(index, percentage),
+                percentage => _progressHandler.Handle(index, percentage),
                 cancellationToken);
         }
         finally

@@ -19,6 +19,7 @@ using Infrastructure.Engine.FFmpeg.VideoMetadataReader;
 using Microsoft.Extensions.DependencyInjection;
 using System.Data;
 using System.Text.Json;
+using VideoCutter.Progress;
 namespace VideoCutter;
 
 internal class Program
@@ -59,6 +60,7 @@ internal class Program
         services.AddSingleton<IVideoSegmenter, VideoSegmenter>();
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
         services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
+        services.AddSingleton<IProgressHandler, ConsoleProgressHandler>();
         services.AddSingleton<IVideoProcessingEngine, VideoProcessingEngine>();
 
         services.AddSingleton<ConfigProvider>();
