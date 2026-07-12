@@ -1,13 +1,16 @@
 ﻿using Application.Engine.Services.Interfaces;
 using Domain.Commands;
+using Domain.Processing;
 using FFMpegCore;
 using System.Text;
 
 namespace Infrastructure.Engine.FFmpeg.CommandExecuter;
 
 public class FFmpegCommandExecuter : ICommandExecutor
-{
+{    
     public async Task ExecuteAsync(Command command,
+                                   VideoSegment segment,
+                                   Action<double>? progress = null,
                                    CancellationToken cancellationToken = default)
     {
         string inputFilePath = GetInputFilePath(command);
@@ -16,9 +19,13 @@ public class FFmpegCommandExecuter : ICommandExecutor
 
         await FFMpegArguments.FromFileInput(inputFilePath)
                              .OutputToFile(
-                                 outputFilePath, 
+                                 outputFilePath,
                                  true,
                                  option => option.WithCustomArgument(customArguments)
+                             )
+                             .NotifyOnProgress(
+                                percentage => progress?.Invoke(percentage), 
+                                segment.Duration
                              )
                              .CancellableThrough(cancellationToken)
                              .ProcessAsynchronously();
@@ -53,14 +60,5 @@ public class FFmpegCommandExecuter : ICommandExecutor
         }
 
         return builder.ToString();
-    }
-
-
-    private void PrintCommand(Command command)
-    {
-        foreach (Argument argument in command.Arguments)
-        {
-            Console.WriteLine($"{argument.Option} - {argument.Value}");
-        }
     }
 }
