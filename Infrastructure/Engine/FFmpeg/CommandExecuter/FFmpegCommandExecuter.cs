@@ -1,7 +1,7 @@
 ﻿using Application.Engine.Services.Interfaces;
 using Domain.Commands;
 using FFMpegCore;
-using System.Diagnostics;
+using System.Text;
 
 namespace Infrastructure.Engine.FFmpeg.CommandExecuter;
 
@@ -10,27 +10,51 @@ public class FFmpegCommandExecuter : ICommandExecutor
     public async Task ExecuteAsync(Command command,
                                    CancellationToken cancellationToken = default)
     {
-        //PrintCommand(command);
+        string inputFilePath = GetInputFilePath(command);
+        string outputFilePath = GetOutputFilePath(command);
+        string customArguments = BuildCustomArguments(command);
 
-        ProcessStartInfo startInfo = new ProcessStartInfo
-        {
-            FileName = GlobalFFOptions.GetFFMpegBinaryPath(),
-            UseShellExecute = false,
-            CreateNoWindow = true
-        };
+        await FFMpegArguments.FromFileInput(inputFilePath)
+                             .OutputToFile(
+                                 outputFilePath, 
+                                 true,
+                                 option => option.WithCustomArgument(customArguments)
+                             )
+                             .CancellableThrough(cancellationToken)
+                             .ProcessAsynchronously();
+    }
+
+    private string GetInputFilePath(Command command)
+    {
+        Argument argument = command.Arguments
+                                   .SingleOrDefault(argument => argument.Option == "-i") ??
+                                   throw new InvalidOperationException("Команда FFmpeg не содержит входной файл");
+
+        return argument.Value;
+    }
+
+    private string GetOutputFilePath(Command command)
+    {
+        Argument argument = command.Arguments
+                                   .SingleOrDefault(argument => argument.Option is null) ??
+                                   throw new InvalidOperationException("Команда FFmpeg не содержит выходной файл");
+
+        return argument.Value;
+    }
+
+    private string BuildCustomArguments(Command command)
+    {
+        StringBuilder builder = new StringBuilder();
 
         foreach (Argument argument in command.Arguments)
         {
-            if (argument.Option is not null)
-                startInfo.ArgumentList.Add(argument.Option);
-
-            startInfo.ArgumentList.Add(argument.Value);
+            if (argument.Option != "-i" && argument.Option is not null)
+                builder.Append($"{argument.Option} {argument.Value} ");
         }
 
-        using var process = Process.Start(startInfo)!;
+        return builder.ToString();
+    }
 
-        await process.WaitForExitAsync(cancellationToken);
-    }   
 
     private void PrintCommand(Command command)
     {

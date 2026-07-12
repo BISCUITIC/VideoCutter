@@ -69,6 +69,11 @@ internal class Program
         VideoProcessingDefinition processing = configProvider.Load(ConfigPath);
 
         IVideoProcessingEngine engine = provider.GetRequiredService<IVideoProcessingEngine>();
-        await engine.ProcessingAsync(processing);
+
+        using CancellationTokenSource tokenSource = new CancellationTokenSource();
+        CancellationToken token = tokenSource.Token;
+
+        await engine.ProcessingAsync(processing, token);
+        
     }
 }

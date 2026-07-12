@@ -13,6 +13,7 @@ public class VideoProcessingEngine : IVideoProcessingEngine
     private readonly ICommandBuilder _commandBuilder;
     private readonly ICommandExecutor _commandExecutor;
 
+    private readonly SemaphoreSlim _semaphore;
 
     public VideoProcessingEngine(IVideoMetadataReader metadataReader,
                                  IVideoSegmenter videoSegmentor,
@@ -24,6 +25,8 @@ public class VideoProcessingEngine : IVideoProcessingEngine
 
         _commandBuilder = commandBuilder;
         _commandExecutor = commandExecutor;
+
+        _semaphore = new SemaphoreSlim(5, 5);
     }
 
     public async Task ProcessingAsync(VideoProcessingDefinition definition, 
@@ -35,15 +38,38 @@ public class VideoProcessingEngine : IVideoProcessingEngine
         IReadOnlyCollection<VideoSegment> segments = 
             _videoSegmenter.Process(definition.Segmentation, metadata);
 
-        int index = 0;
+        IEnumerable<Task> processingTasks = 
+            segments.Select(
+                (segment, index) => 
+                    ProcessSegmentAsync(
+                        index, segment, definition, cancellationToken
+                    )
+            );
 
-        foreach (VideoSegment segment in segments)
+        await Task.WhenAll(processingTasks);
+    }
+
+    private async Task ProcessSegmentAsync(int index,
+                                           VideoSegment segment,
+                                           VideoProcessingDefinition definition,
+                                           CancellationToken cancellationToken)
+    {
+        await _semaphore.WaitAsync(cancellationToken);
+
+        try
         {
-            Command command = _commandBuilder.Build(index ,segment, definition);
+            Command command = _commandBuilder.Build(
+                index,
+                segment,
+                definition);
 
-            await _commandExecutor.ExecuteAsync(command, cancellationToken);
-
-            index++;
-        }        
+            await _commandExecutor.ExecuteAsync(
+                command,
+                cancellationToken);
+        }
+        finally
+        {
+            _semaphore.Release();
+        }
     }
 }
