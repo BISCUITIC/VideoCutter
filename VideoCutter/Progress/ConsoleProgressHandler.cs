@@ -76,7 +76,7 @@ internal class ConsoleProgressHandler : IProgressHandler, IDisposable
             left, top, "Total progress", GetTotalProgressPercentage
         );
 
-        _timer.Display(left, top + 1, "Time spend");
+        _timer.Display(left, top + 1, "Running time");
     }
 
     private void DisplayProgressBars(int left, int top)

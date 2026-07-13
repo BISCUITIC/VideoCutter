@@ -51,6 +51,21 @@ internal static class ServiceCollectionExtensions
         services.AddSingleton<IVideoSegmentor, VideoSegmentor>();
 
         services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
+        services.AddSingleton<ICommandExecutor, FFmpegCommandExecuter>();
+    }
+
+    public static void AddFakeProcessing(this IServiceCollection services)
+    {
+        services.AddCommonInfrastructure();
+
+        services.AddSingleton<IFFmpegFilterGraphBuilder, FFmpegFilterGraphBuilder>();
+        services.AddSingleton<IFFmpegFilterSerializer, FFmpegFilterSerializer>();
+        services.AddSingleton<IFFmpegFilterGraphSerializer, FFmpegFilterGraphSerializer>();
+
+        services.AddSingleton<IVideoMetadataReader, FFmpegVideoMetadataReader>();
+        services.AddSingleton<IVideoSegmentor, VideoSegmentor>();
+
+        services.AddSingleton<ICommandBuilder, FFmpegCommandBuilder>();
         services.AddSingleton<ICommandExecutor, FakeCommandExecutor>();
     }
 
