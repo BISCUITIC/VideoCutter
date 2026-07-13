@@ -72,6 +72,35 @@ dotnet restore
 dotnet run --project VideoCutter/VideoCutter.csproj
 ```
 
+## Screenshots
+
+### Main screen
+
+![Main screen](docs/images/MainScreen.png)
+
+### Processing result
+<table>
+  <tr>
+    <td align="center" width="50%">
+      <img 
+        src="docs/images/BeforeExample.png" 
+        width="100%" 
+        alt="Video before processing">
+      <br>
+      <strong>Before processing</strong>
+    </td>
+    <td align="center" width="50%">
+      <img
+        src="docs/images/AfterExample.png"
+        width="100%"
+        alt="Video after processing"
+      >
+      <br>
+      <strong>After processing</strong>
+    </td>
+  </tr>
+</table>
+
 ## About
 
 This project helped me practice asynchronous programming, multithreading, external process execution, and backend application architecture in .NET.
