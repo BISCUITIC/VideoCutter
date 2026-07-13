@@ -6,6 +6,10 @@
 
 **VideoCutter** is a C# console application for splitting and processing videos with FFmpeg.
 
+## About
+
+This project helped me practice asynchronous programming, multithreading, external process execution, and backend application architecture in .NET.
+
 ## Features
 
 * splits videos into smaller parts;
@@ -100,10 +104,6 @@ dotnet run --project VideoCutter/VideoCutter.csproj
     </td>
   </tr>
 </table>
-
-## About
-
-This project helped me practice asynchronous programming, multithreading, external process execution, and backend application architecture in .NET.
 
 ## License
 
