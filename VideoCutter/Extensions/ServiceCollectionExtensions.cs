@@ -35,6 +35,7 @@ internal static class ServiceCollectionExtensions
     public static void AddConsoleProgressHandler(this IServiceCollection services)
     {
         services.AddTransient<IProgressBar, ConsoleProgressBar>();
+        services.AddTransient<IProcessingTimer, ConsoleTimer>();
         services.AddTransient<IProgressHandler, ConsoleProgressHandler>();
     }
 

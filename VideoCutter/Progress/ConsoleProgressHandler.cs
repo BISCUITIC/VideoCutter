@@ -1,18 +1,17 @@
 ﻿using Application.Engine.Services.Interfaces;
-using System.Data;
 using VideoCutter.Progress.Interfaces;
 
 namespace VideoCutter.Progress;
 
-internal class ConsoleProgressHandler : IProgressHandler
+internal class ConsoleProgressHandler : IProgressHandler, IDisposable
 {
-
-    private const int MaxVisibleBars = 10;    
+    private const int MaxVisibleBars = 10;
 
     private readonly IProgressBar _progressBar;
+    private readonly IProcessingTimer _timer;
 
-    private double[] _progress;
-    private bool[] _completed;
+    private double[] _progress = Array.Empty<double>();
+    private bool[] _completed = Array.Empty<bool>();
 
     private int _totalSegmentsCount;
     private int _completedSegmentsCount;
@@ -24,9 +23,10 @@ internal class ConsoleProgressHandler : IProgressHandler
     private double GetTotalProgressPercentage =>
         (double)_completedSegmentsCount / _totalSegmentsCount * 100;
 
-    public ConsoleProgressHandler(IProgressBar progressBar)
-    {            
+    public ConsoleProgressHandler(IProgressBar progressBar, IProcessingTimer timer)
+    {
         _progressBar = progressBar;
+        _timer = timer;
         _lock = new Lock();
     }
 
@@ -41,13 +41,13 @@ internal class ConsoleProgressHandler : IProgressHandler
         _completed = new bool[_totalSegmentsCount];
 
         Console.CursorVisible = false;
-    }    
+    }
 
     public void Handle(int index, double percentage)
     {
         using (_lock.EnterScope())
         {
-            if(IsSegmentBecomeCompleted(index, percentage))
+            if (IsSegmentBecomeCompleted(index, percentage))
             {
                 _completedSegmentsCount++;
                 _completed[index] = true;
@@ -61,25 +61,27 @@ internal class ConsoleProgressHandler : IProgressHandler
 
     public void Finish()
     {
-        Console.SetCursorPosition(0, 1);
+        Console.SetCursorPosition(0, 3);
     }
 
     private void Display()
     {
         DisplayGeneralInfo(0, 0);
         DisplayProgressBars(0, 2);
-    }    
+    }
 
     private void DisplayGeneralInfo(int left, int top)
     {
         _progressBar.Display(
             left, top, "Total progress", GetTotalProgressPercentage
         );
+
+        _timer.Display(left, top + 1, "Time spend");
     }
 
     private void DisplayProgressBars(int left, int top)
     {
-        int visibleBarIndex = 0;       
+        int visibleBarIndex = 0;
 
         for (int index = 0; index < _progress.Length; index++)
         {
@@ -126,5 +128,10 @@ internal class ConsoleProgressHandler : IProgressHandler
     private void UpdatePercentage(int index, double newPercentage)
     {
         _progress[index] = newPercentage;
+    }
+
+    public void Dispose()
+    {
+        _timer.Dispose();
     }
 }
